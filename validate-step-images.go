@@ -113,6 +113,7 @@ func visitMap(stepContent map[string]interface{}, p *ParsingContext) {
 			fmt.Println(k, v, "(Found float64)")
 		case []interface{}:
 			fmt.Println(k, "(Found array):")
+			storeSourcesInfo(k, v, p)
 			// for i, u := range v {
 			// 	fmt.Println("    ", i, u)
 			// }
@@ -128,6 +129,12 @@ func visitMap(stepContent map[string]interface{}, p *ParsingContext) {
 	}
 
 }
+func storeSourcesInfo(key string, values []interface{}, p *ParsingContext) {
+	if p.nestingLevel != 1 || key != "sources" || len(values) == 0 {
+		return
+	}
+	p.currentStep.SourceURL = values[0].(string)
+}
 
 func storeStepInfo(key string, value string, p *ParsingContext) {
 	switch key {
@@ -138,11 +145,6 @@ func storeStepInfo(key string, value string, p *ParsingContext) {
 			return
 		}
 		storeVersionInfo(value, p)
-	case "sources":
-		if p.nestingLevel != 1 {
-			return
-		}
-		storeSourcesInfo(value, p)
 	case "name":
 		if p.nestingLevel != 1 {
 			return
@@ -173,10 +175,6 @@ func storeVersionInfo(pluginVersion string, p *ParsingContext) {
 	}
 	p.currentStep = new(StepDetails)
 	p.currentStep.Version = pluginVersion
-}
-
-func storeSourcesInfo(pluginSources string, p *ParsingContext) {
-	p.currentStep.SourceURL = pluginSources
 }
 
 func storeNameInfo(pluginName string, p *ParsingContext) {
