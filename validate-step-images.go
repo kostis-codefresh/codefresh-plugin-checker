@@ -11,7 +11,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	// "strings"
+	"strings"
 )
 
 type StepStatus int
@@ -60,11 +60,13 @@ func main() {
 	}
 	fmt.Println("2d: ", tags)
 
-	readJson()
+	stepsFound := readJson()
+
+	fmt.Printf("Found %d steps\n", len(stepsFound))
 
 }
 
-func readJson() {
+func readJson() []StepDetails {
 
 	fileName := "input.json"
 	jsonFile, err := os.Open(fileName)
@@ -93,6 +95,8 @@ func readJson() {
 		visitMap(stepContent, p)
 
 	}
+
+	return p.finishedSteps
 
 }
 
@@ -149,7 +153,17 @@ func storeStepInfo(key string, value string, p *ParsingContext) {
 
 func storeImageInfo(fullDockerImage string, p *ParsingContext) {
 	var dockerImage DockerImageName
-	dockerImage.BaseImage = fullDockerImage
+
+	if strings.Contains(fullDockerImage, ":") {
+		imageAndTag := strings.Split(fullDockerImage, ":")
+		dockerImage.BaseImage = imageAndTag[0]
+		dockerImage.HasTag = true
+		dockerImage.Tag = imageAndTag[1]
+
+	} else {
+		dockerImage.HasTag = false
+		dockerImage.BaseImage = fullDockerImage
+	}
 	p.currentStep.ImagesUsed = append(p.currentStep.ImagesUsed, dockerImage)
 }
 
