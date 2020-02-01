@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/heroku/docker-registry-client/registry"
+
 	// "github.com/docker/distribution/digest"
 	// "github.com/docker/distribution/manifest"
 	// "github.com/docker/libtrust"
@@ -44,21 +44,21 @@ type ParsingContext struct {
 func main() {
 	fmt.Println("Checking node image")
 
-	url := "https://registry.hub.docker.com"
-	username := "" // anonymous
-	password := "" // anonymous
-	hub, err := registry.New(url, username, password)
-	if err != nil {
-		log.Fatal(err)
-	}
+	// url := "https://registry.hub.docker.com"
+	// username := "" // anonymous
+	// password := "" // anonymous
+	// hub, err := registry.New(url, username, password)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
-	fmt.Println("Connection successful")
+	// fmt.Println("Connection successful")
 
-	tags, err := hub.Tags("heroku/cedar")
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("2d: ", tags)
+	// tags, err := hub.Tags("heroku/cedar")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// fmt.Println("2d: ", tags)
 
 	stepsFound := readJson()
 
@@ -103,14 +103,12 @@ func readJson() []StepDetails {
 func visitMap(stepContent map[string]interface{}, p *ParsingContext) {
 
 	for k, v := range stepContent {
-		fmt.Printf("Inside %s at %d\n", k, p.nestingLevel)
+		// fmt.Printf("Inside %s at %d\n", k, p.nestingLevel)
 
 		switch v := v.(type) {
 		case string:
-			fmt.Println(k, v, "(Found string)")
+			fmt.Println(k, v, "(Found string at )", p.nestingLevel)
 			storeStepInfo(k, v, p)
-		case float64:
-			fmt.Println(k, v, "(Found float64)")
 		case []interface{}:
 			fmt.Println(k, "(Found array):")
 			storeSourcesInfo(k, v, p)
@@ -141,10 +139,12 @@ func storeStepInfo(key string, value string, p *ParsingContext) {
 	case "image":
 		storeImageInfo(value, p)
 	case "version":
-		if p.nestingLevel != 0 {
-			return
+		if p.nestingLevel == 0 {
+			goToNextStep(p)
+		} else if p.nestingLevel == 1 {
+			storeVersionInfo(value, p)
 		}
-		storeVersionInfo(value, p)
+
 	case "name":
 		if p.nestingLevel != 1 {
 			return
@@ -170,11 +170,15 @@ func storeImageInfo(fullDockerImage string, p *ParsingContext) {
 }
 
 func storeVersionInfo(pluginVersion string, p *ParsingContext) {
+	p.currentStep.Version = pluginVersion
+}
+
+func goToNextStep(p *ParsingContext) {
 	if p.currentStep != nil {
+		fmt.Println(">>>>>>>>>>>>>Finished with step ", p.currentStep.Name)
 		p.finishedSteps = append(p.finishedSteps, *p.currentStep)
 	}
 	p.currentStep = new(StepDetails)
-	p.currentStep.Version = pluginVersion
 }
 
 func storeNameInfo(pluginName string, p *ParsingContext) {
