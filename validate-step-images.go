@@ -92,11 +92,22 @@ func readJson() []StepDetails {
 	for _, stepDef := range data {
 		stepContent := stepDef.(map[string]interface{})
 
-		visitMap(stepContent, p)
+		readSingleStep(stepContent, p)
 
 	}
 
 	return p.finishedSteps
+
+}
+
+func readSingleStep(stepContent map[string]interface{}, p *ParsingContext) {
+	p.currentStep = new(StepDetails)
+	p.nestingLevel = 0
+
+	visitMap(stepContent, p)
+
+	p.finishedSteps = append(p.finishedSteps, *p.currentStep)
+	fmt.Println(">>>>>>>>>>>>>Finished with new step ", p.currentStep.Name)
 
 }
 
@@ -138,10 +149,9 @@ func storeStepInfo(key string, value string, p *ParsingContext) {
 	switch key {
 	case "image":
 		storeImageInfo(value, p)
+
 	case "version":
-		if p.nestingLevel == 0 {
-			goToNextStep(p)
-		} else if p.nestingLevel == 1 {
+		if p.nestingLevel == 1 {
 			storeVersionInfo(value, p)
 		}
 
@@ -170,26 +180,11 @@ func storeImageInfo(fullDockerImage string, p *ParsingContext) {
 }
 
 func storeVersionInfo(pluginVersion string, p *ParsingContext) {
-	createStepIfNeeded(p)
 	p.currentStep.Version = pluginVersion
 }
 
-func goToNextStep(p *ParsingContext) {
-	if p.currentStep != nil {
-		fmt.Println(">>>>>>>>>>>>>Finished with step ", p.currentStep.Name)
-		p.finishedSteps = append(p.finishedSteps, *p.currentStep)
-	}
-	p.currentStep = new(StepDetails)
-}
-
 func storeNameInfo(pluginName string, p *ParsingContext) {
-	createStepIfNeeded(p)
 	p.currentStep.Name = pluginName
-}
+	fmt.Println(">>>>>>>>>>>>>Found step ", pluginName)
 
-func createStepIfNeeded(p *ParsingContext){
-	if p.currentStep == nil {
-		p.currentStep = new(StepDetails)
-	}
-	
 }
