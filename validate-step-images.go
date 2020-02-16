@@ -60,15 +60,14 @@ func main() {
 	// }
 	// fmt.Println("2d: ", tags)
 
-	stepsFound := readJson()
+	stepsFound := readJSON("input.json")
 
 	fmt.Printf("Found %d steps\n", len(stepsFound))
 
 }
 
-func readJson() []StepDetails {
+func readJSON(fileName string) []StepDetails {
 
-	fileName := "input.json"
 	jsonFile, err := os.Open(fileName)
 
 	if err != nil {

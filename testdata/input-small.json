@@ -1,0 +1,371 @@
+[
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "azure-key-vault",
+			"version": "0.0.2",
+			"isPublic": true,
+			"description": "Fetch Secrets from Azure Key Vault",
+			"sources": [
+				"https://github.com/codefresh-io/steps/tree/master/incubating/azure-key-vault"
+			],
+			"stage": "incubating",
+			"maintainers": [
+				{
+					"name": "Dustin Van Buskirk",
+					"email": "dustinb@codefresh.io"
+				}
+			],
+			"categories": [
+				"secret management",
+				"azure"
+			],
+			"official": false,
+			"tags": [],
+			"icon": {
+				"type": "svg",
+				"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/incubating/azure-key-vault/icon.svg",
+				"background": "#f4f4f4"
+			},
+			"examples": [
+				{
+					"description": "example-1",
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"GetAzureSecret": {
+								"title": "Fetching Azure Secret from Key Vault",
+								"type": "azure-key-vault",
+								"arguments": {
+									"AZURE_CLIENT_ID": "${{AZURE_CLIENT_ID}}",
+									"AZURE_SECRET": "${{AZURE_SECRET}}",
+									"AZURE_TENANT": "${{AZURE_TENANT}}",
+									"AZURE_SECRET_ID": "${{AZURE_SECRET_ID}}",
+									"AZURE_SECRET_VERSION": "${{AZURE_SECRET_VERSION}}",
+									"AZURE_VAULT_URL": "${{AZURE_VAULT_URL}}"
+								}
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-10-16T15:39:26.701Z",
+			"updated_at": "2019-10-16T15:39:26.701Z",
+			"latest": true,
+			"id": "5da739ae92fba668f304fde8"
+		},
+		"spec": {
+			"arguments": "{\n    \"definitions\": {},\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"patterns\": [],\n    \"required\": [],\n    \"properties\": {\n        \"AZURE_CLIENT_ID\": {\n            \"type\": \"string\",\n            \"description\": \"Application (client) ID for Service Principal\"\n        },\n        \"AZURE_SECRET\": {\n            \"type\": \"string\",\n            \"description\": \"Secret for Service Principal\"\n        },\n        \"AZURE_TENANT\": {\n            \"type\": \"string\",\n            \"description\": \"Directory (tenant) ID for Service Principal\"\n        },\n        \"AZURE_SECRET_ID\": {\n            \"type\": \"string\",\n            \"description\": \"Secret ID from Azure Key Vault\"\n        },\n        \"AZURE_SECRET_VERSION\": {\n            \"type\": \"string\",\n            \"description\": \"Secret Version from Azure Key Vault\"\n        },\n        \"AZURE_VAULT_URL\": {\n            \"type\": \"string\",\n            \"description\": \"URL for Azure Key Vault\"\n        }\n    }\n}",
+			"steps": {
+				"main": {
+					"name": "azure-key-vault",
+					"image": "codefreshplugins/cfstep-azure-key-vault",
+					"environment": [
+						"AZURE_CLIENT_ID=${{AZURE_CLIENT_ID}}",
+						"AZURE_SECRET=${{AZURE_SECRET}}",
+						"AZURE_TENANT=${{AZURE_TENANT}}",
+						"AZURE_SECRET_ID=${{AZURE_SECRET_ID}}",
+						"AZURE_SECRET_VERSION=${{AZURE_SECRET_VERSION}}",
+						"AZURE_VAULT_URL=${{AZURE_VAULT_URL}}"
+					]
+				}
+			}
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "azure-build",
+			"isPublic": true,
+			"description": "Docker build in Azure ACR",
+			"sources": [
+				"https://github.com/codefresh-io/steps/tree/master/incubating/azure-build"
+			],
+			"stage": "incubating",
+			"maintainers": [
+				{
+					"name": "Amir Gabay",
+					"email": "amir.gabay@codefresh.io"
+				}
+			],
+			"categories": [
+				"build"
+			],
+			"official": false,
+			"tags": [],
+			"icon": {
+				"type": "svg",
+				"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/incubating/azure-build/icon.svg",
+				"background": "#f4f4f4"
+			},
+			"examples": [
+				{
+					"description": "example-1",
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"cf-az-build": {
+								"type": "azure-build",
+								"arguments": {
+									"AUTH": "service-principal",
+									"IMAGE": "${{IMAGE_NAME}}",
+									"TAG": "${{IMAGE_TAG}}",
+									"ACR_NAME": "${{REGISTRY}}",
+									"APP_ID": "${{AZURE_APP_ID}}",
+									"PASSWORD": "${{AZURE_PASSWORD}}",
+									"TENANT": "${{TENANT}}",
+									"DOCKERFILE_PATH": "${{DOCKERFILE}}",
+									"USER": "${{USER}}"
+								}
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-07-03T05:57:01.269Z",
+			"updated_at": "2019-09-18T08:15:29.504Z",
+			"latest": true,
+			"version": "0.0.1",
+			"id": "5d1c43ada7e22ef2cf7ea739"
+		},
+		"spec": {
+			"arguments": "{\n    \"definitions\": {},\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"patterns\": [],\n    \"required\": [\n        \"USER\",\n        \"IMAGE\",\n        \"TAG\",\n        \"ACR_NAME\",\n        \"APP_ID\",\n        \"PASSWORD\",\n        \"TENANT\"\n    ],\n    \"properties\": {\n        \"AUTH\": {\n            \"type\": \"string\",\n            \"description\": \"Only if authentication mode is by service principal\"\n        },\n        \"USER\": {\n            \"type\": \"string\",\n            \"description\": \"azure user name (not need in service principal authentication mode)\"\n        },\n        \"IMAGE\": {\n            \"type\": \"string\",\n            \"description\": \"image name\"\n        },\n        \"TAG\": {\n            \"type\": \"string\",\n            \"description\": \"tag name\"\n        },\n        \"ACR_NAME\": {\n            \"type\": \"string\",\n            \"description\": \"acr registry name\"\n        },\n        \"APP_ID\": {\n            \"type\": \"string\",\n            \"description\": \"azure service principal application id (service principal authentication mode only)\"\n        },\n        \"PASSWORD\": {\n            \"type\": \"string\",\n            \"description\": \"azure service principal password or user password (based on authentication mode)\"\n        },\n        \"TENANT\": {\n            \"type\": \"string\",\n            \"description\": \"azure ad tenant id (service principal authentication mode only)\"\n        },\n        \"DOCKERFILE_PATH\": {\n            \"type\": \"string\",\n            \"description\": \"dockerfile path (default - working_dir/Dockerfile)\"\n        }\n    }\n}",
+			"steps": {
+				"main": {
+					"name": "azure-build",
+					"image": "codefreshplugins/cf-azure-builder",
+					"environment": [
+						"AUTH=${{AUTH}}",
+						"USER=${{USER}}",
+						"IMAGE=${{IMAGE}}",
+						"TAG=${{TAG}}",
+						"ACR_NAME=${{ACR_NAME}}",
+						"APP_ID=${{APP_ID}}",
+						"PASSWORD=${{PASSWORD}}",
+						"TENANT=${{TENANT}}",
+						"DOCKERFILE_PATH=${{DOCKERFILE_PATH}}"
+					]
+				}
+			}
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "run-jenkins-jobs",
+			"isPublic": true,
+			"description": "Run jenkins job from codefresh pipeline",
+			"sources": [
+				"https://github.com/codefresh-io/steps/tree/master/incubating/run-jenkins-jobs"
+			],
+			"stage": "incubating",
+			"maintainers": [
+				{
+					"name": "Vadim Waisman"
+				}
+			],
+			"categories": [
+				"build"
+			],
+			"official": false,
+			"tags": [],
+			"icon": {
+				"type": "image",
+				"size": {
+					"large": {
+						"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/incubating/run-jenkins-jobs/icon.jpg"
+					}
+				}
+			},
+			"examples": [
+				{
+					"description": "example-1",
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"RunJenkins": {
+								"title": "Triggering Jenkins Job",
+								"type": "run-jenkins-jobs",
+								"arguments": {
+									"JENKINS_URL": "${{JENKINS_URL}}",
+									"JENKINS_TOKEN": "${{JENKINS_TOKEN}}",
+									"JENKINS_JOB": "${{JENKINS_JOB}}",
+									"JENKINS_USERNAME": "${{JENKINS_USERNAME}}"
+								}
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-07-03T14:57:01.935Z",
+			"updated_at": "2019-09-18T08:15:28.427Z",
+			"latest": true,
+			"version": "0.0.1",
+			"id": "5d1cc23ea7e22ee3bb7ea75b"
+		},
+		"spec": {
+			"arguments": "{\n    \"definitions\": {},\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"patterns\": [],\n    \"required\": [\n      \"JENKINS_USERNAME\",\n      \"JENKINS_TOKEN\",\n      \"JENKINS_URL\",\n      \"JENKINS_JOB\"\n    ],\n    \"properties\": {\n        \"JENKINS_USERNAME\": {\n            \"type\": \"string\",\n            \"description\": \"jenkins username (required)\"\n        },\n        \"JENKINS_TOKEN\": {\n            \"type\": \"string\",\n            \"description\": \"jenkins token (required)\"\n        },\n        \"JENKINS_URL\": {\n            \"type\": \"string\",\n            \"description\": \"jenkins machine url (required)\"\n        },\n        \"JENKINS_JOB\": {\n            \"type\": \"string\",\n            \"description\": \"list of jenkins jobs to run separated by spaces (required)\"\n        }\n    }\n}",
+			"steps": {
+				"main": {
+					"name": "run-jenkins-jobs",
+					"image": "codefreshplugins/run-jenkins-jobs",
+					"environment": [
+						"JENKINS_USERNAME=${{JENKINS_USERNAME}}",
+						"JENKINS_TOKEN=${{JENKINS_TOKEN}}",
+						"JENKINS_URL=${{JENKINS_URL}}",
+						"JENKINS_JOB=${{JENKINS_JOB}}"
+					]
+				}
+			}
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "ecs-deploy",
+			"isPublic": true,
+			"description": "Release a Helm chart (update or install)",
+			"sources": [
+				"https://github.com/codefresh-io/steps/tree/master/incubating/ecs-deploy"
+			],
+			"stage": "incubating",
+			"maintainers": [
+				{
+					"name": "Oleg  Verhovsky",
+					"email": "oleg@codefresh.io"
+				}
+			],
+			"categories": [
+				"deployment"
+			],
+			"official": false,
+			"tags": [],
+			"icon": {
+				"type": "image",
+				"size": {
+					"large": {
+						"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/incubating/ecs-deploy/icon.jpg"
+					}
+				}
+			},
+			"examples": [
+				{
+					"description": "example-1",
+					"workflow": {
+						"deploy to ecs": {
+							"type": "ecs-deploy",
+							"arguments": {
+								"AWS_ACCESS_KEY_ID": "${{AWS_ACCESS_KEY_ID}}",
+								"AWS_SECRET_ACCESS_KEY": "${{AWS_SECRET_ACCESS_KEY}}"
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-06-25T06:01:06.499Z",
+			"updated_at": "2019-09-18T08:15:28.251Z",
+			"latest": true,
+			"version": "0.0.1",
+			"id": "5d11b8a299f5e041ca788333"
+		},
+		"spec": {
+			"arguments": "{\n    \"definitions\": {},\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"patterns\": [],\n    \"required\": [\n        \"AWS_ACCESS_KEY_ID\",\n        \"AWS_SECRET_ACCESS_KEY\",\n        \"aws-region\",\n        \"region\",\n        \"cluster_name\",\n        \"service_name\"\n    ],\n    \"properties\": {\n        \"AWS_ACCESS_KEY_ID\": {\n            \"type\": \"string\",\n            \"description\": \"Amazon access key ID\"\n        },\n        \"AWS_SECRET_ACCESS_KEY\": {\n            \"type\": \"string\",\n            \"description\": \"amazon secret key (make sure it's encrypted)\"\n        },\n        \"aws-region\": {\n            \"type\": \"string\",\n            \"description\": \"Helm release name\"\n        },\n        \"region\": {\n            \"type\": \"string\",\n            \"description\": \"aws region\"\n        },\n        \"cluster_name\": {\n            \"type\": \"string\",\n            \"description\": \"ecs cluster name\"\n        },\n        \"service_name\": {\n            \"type\": \"string\",\n            \"description\": \"ecs service name\"\n        }\n    }\n}",
+			"steps": {
+				"main": {
+					"name": "ecs-deploy",
+					"image": "codefreshplugins/cf-deploy-ecs",
+					"environment": [
+						"AWS_ACCESS_KEY_ID=${{AWS_ACCESS_KEY_ID}}",
+						"AWS_SECRET_ACCESS_KEY=${{AWS_SECRET_ACCESS_KEY}}",
+						"aws-region=${{aws-region}}",
+						"region=${{region}}",
+						"cluster_name=${{cluster_name}}",
+						"service_name=${{service_name}}"
+					]
+				}
+			}
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "k8s-blue-green-deployment",
+			"isPublic": true,
+			"description": "Perform blue/green deployments on a Kubernetes cluster",
+			"sources": [
+				"https://github.com/codefresh-io/steps/tree/master/incubating/k8s-blue-green-deployment"
+			],
+			"stage": "incubating",
+			"maintainers": [
+				{
+					"name": "Kostis Kapelonis"
+				}
+			],
+			"categories": [
+				"featured",
+				"deployment"
+			],
+			"official": false,
+			"tags": [],
+			"icon": {
+				"type": "image",
+				"size": {
+					"large": {
+						"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/incubating/k8s-blue-green-deployment/icon.jpg"
+					}
+				}
+			},
+			"examples": [
+				{
+					"description": "example-1",
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"run": {
+								"title": "Deploying new version ${{CF_SHORT_REVISION}}",
+								"type": "k8s-blue-green-deployment",
+								"arguments": {
+									"SERVICE_NAME": "${{SERVICE_NAME}}",
+									"DEPLOYMENT_NAME": "${{DEPLOYMENT_NAME}}",
+									"NEW_VERSION": "${{NEW_VERSION}}",
+									"HEALTH_SECONDS": "${{HEALTH_SECONDS}}",
+									"NAMESPACE": "${{NAMESPACE}}",
+									"KUBE_CONTEXT": "${{KUBE_CONTEXT}}"
+								}
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-06-25T06:01:06.440Z",
+			"updated_at": "2019-09-18T08:15:28.251Z",
+			"latest": true,
+			"version": "0.0.1",
+			"id": "5d11b8a2908ad54f1cf271e2"
+		},
+		"spec": {
+			"arguments": "{\n    \"definitions\": {},\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"patterns\": [],\n    \"required\": [\n      \"SERVICE_NAME\",\n      \"DEPLOYMENT_NAME\",\n      \"NEW_VERSION\",\n      \"HEALTH_SECONDS\",\n      \"NAMESPACE\",\n      \"KUBE_CONTEXT\"\n    ],\n    \"properties\": {\n        \"KUBE_CONTEXT\": {\n            \"type\": \"string\",\n            \"description\": \"The name of your cluster (as found in the Codefresh Kubernetes dashboard).\"\n        },\n        \"SERVICE_NAME\": {\n            \"type\": \"string\",\n            \"description\": \"Name of the service\"\n        },\n        \"DEPLOYMENT_NAME\": {\n            \"type\": \"string\",\n            \"description\": \"Name of the deployment\"\n        },\n        \"NEW_VERSION\": {\n            \"type\": \"string\",\n            \"description\": \"New version\"\n        },\n        \"NAMESPACE\": {\n            \"type\": \"string\",\n            \"description\": \"The namespace in the cluster\"\n        },\n        \"HEALTH_SECONDS\": {\n            \"type\": \"string\",\n            \"description\": \"Number of seconds the mesure health\"\n        }\n    }\n}",
+			"steps": {
+				"main": {
+					"name": "k8s-blue-green-deployment",
+					"image": "codefreshplugins/k8s-blue-green",
+					"environment": [
+						"KUBE_CONTEXT=${{KUBE_CONTEXT}}",
+						"SERVICE_NAME=${{SERVICE_NAME}}",
+						"DEPLOYMENT_NAME=${{DEPLOYMENT_NAME}}",
+						"NEW_VERSION=${{NEW_VERSION}}",
+						"HEALTH_SECONDS=${{HEALTH_SECONDS}}",
+						"NAMESPACE=${{NAMESPACE}}",
+						"KUBE_CONTEXT=${{KUBE_CONTEXT}}"
+					]
+				}
+			}
+		}
+	}
+
+]

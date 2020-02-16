@@ -1,0 +1,1859 @@
+[
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "freestyle",
+			"isPublic": true,
+			"description": "Run freestyle commands on top of a docker image",
+			"sources": [
+				"https://github.com/codefresh-io/steps/tree/master/graduated/freestyle"
+			],
+			"stage": "graduated",
+			"categories": [
+				"featured",
+				"building-block"
+			],
+			"official": true,
+			"icon": {
+				"type": "svg",
+				"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/graduated/freestyle/icon-2.svg",
+				"background": "#C8EFC3"
+			},
+			"maintainers": [
+				{
+					"name": "Codefresh INC"
+				}
+			],
+			"examples": [
+				{
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"Freestyle": {
+								"title": "Running docker image",
+								"type": "freestyle",
+								"arguments": {
+									"image": "alpine:3.8",
+									"commands": [
+										"echo \"Hello world\"",
+										"echo \"asdasd\""
+									]
+								}
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-06-25T06:01:06.116Z",
+			"updated_at": "2019-08-25T12:33:40.143Z",
+			"latest": true,
+			"version": "0.0.1",
+			"id": "5d11b8a299f5e074df788324"
+		},
+		"spec": {
+			"arguments": "{\n    \"definitions\": {},\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"patterns\": [],\n    \"required\": [\"image\"],\n    \"properties\": {\n        \"working_directory\": {\n            \"type\": \"string\",\n            \"description\": \"The directory from which the commands are executed. It can be an explicit path in the container’s file system, or a variable that references another step. The default working_directory is the cloned repository directory and not the working directory specified by the image. If you need to use the default working directory of the image use IMAGE_WORK_DIR.\",\n            \"examples\": [\"/codefresh/volume\"]\n        },\n        \"image\": {\n            \"type\": \"string\",\n            \"examples\": [\n              \"alpine:latest\"\n            ],\n            \"description\": \"The image from which the executable container is created. It can be an explicit ID of a Docker image, or a variable that references a Build or Push step.\"\n        },\n        \"commands\": {\n            \"type\": \"array\",\n            \"items\": {\n                \"type\": \"string\"\n            },\n            \"description\": \"One or more commands to execute in a shell in the container, as array of strings.\"\n        },\n        \"cmd\": {\n            \"oneOf\": [{\n                \"type\": \"string\"\n            }, {\n                \"type\": \"array\",\n                \"items\": {\n                    \"type\": \"string\"\n                }\n            }],\n            \"description\": \"docker CMD arguments to use along with the container entrypoint. can be string or array of strings.\"\n        },\n        \"volumes\": {\n            \"type\": \"array\",\n            \"items\": {\n                \"type\": \"string\",\n                \"pattern\": \":\"\n            },\n            \"description\": \"One or more volumes for the container. All volumes must be mounted from the existing shared volume (see details below).\"\n        },\n        \"environment\": {\n            \"type\": \"array\",\n            \"items\": {\n                \"type\": \"string\"\n            },\n            \"description\": \"A set of environment variables for the container.\"\n        },\n        \"entry_point\": {\n            \"oneOf\": [{\n                \"type\": \"string\"\n            }, {\n                \"type\": \"array\",\n                \"items\": {\n                    \"type\": \"string\"\n                }\n            }],\n            \"description\": \"Override the default container entrypoint. can be string or array of strings.\"\n        },\n        \"shell\": {\n            \"enum\": [\"sh\", \"bash\"],\n            \"type\": \"string\",\n            \"description\": \"Explicitly set the executing shell to bash or sh. If not set the default will be sh.\"\n        }\n    }\n}\n",
+			"steps": null
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "pending-approval",
+			"isPublic": true,
+			"description": "Pause a running build until an approve or deny action",
+			"sources": [
+				"https://github.com/codefresh-io/steps/tree/master/graduated/pending-approval"
+			],
+			"stage": "graduated",
+			"categories": [
+				"featured",
+				"building-block"
+			],
+			"official": true,
+			"icon": {
+				"type": "svg",
+				"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/graduated/pending-approval/icon-2.svg",
+				"background": "#f4f4f4"
+			},
+			"maintainers": [
+				{
+					"name": "Codefresh INC"
+				}
+			],
+			"examples": [
+				{
+					"description": "basic examples",
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"Approve": {
+								"type": "pending-approval",
+								"title": "Wait for approval"
+							}
+						}
+					}
+				},
+				{
+					"description": "using timeout",
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"Approve": {
+								"type": "pending-approval",
+								"title": "Wait for approval",
+								"timeout": {
+									"duration": 1,
+									"finalState": "denied"
+								}
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-06-25T06:01:06.116Z",
+			"updated_at": "2019-08-25T12:33:39.810Z",
+			"latest": true,
+			"version": "0.0.1",
+			"id": "5d11b8a299f5e05c9978831e"
+		},
+		"spec": {
+			"arguments": "{\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"definitions\": {},\n    \"type\": \"object\",\n    \"properties\": {\n        \"timeout\": {\n          \"type\": \"object\",\n          \"description\": \"Define timeout behavior\",\n          \"properties\": {\n            \"duration\": {\n              \"description\": \"Duration of the timeout in hours\",\n              \"type\": \"number\"\n            },\n            \"finalState\": {\n              \"description\": \"The final state of the step once the timeout is reached\",\n              \"default\": \"terminated\",\n              \"enum\": [\n                \"terminated\",\n                \"approved\",\n                \"denied\"\n              ],\n              \"type\": \"string\"\n            }\n          },\n          \"examples\": [\"duration: 1\\nfinalState: approved\"],\n          \"additionalProperties\": false,\n          \"patterns\": []\n        }\n    },\n    \"additionalProperties\": false,\n    \"patterns\": []\n}\n",
+			"steps": null
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "helmfile",
+			"version": "0.0.1",
+			"isPublic": true,
+			"description": "Use helmfile from Codefresh pipeline",
+			"sources": [
+				"https://github.com/codefresh-contrib/cfstep-helmfile"
+			],
+			"stage": "incubating",
+			"maintainers": [
+				{
+					"name": "Dustin Van Buskirk",
+					"email": "dustinvb@codefresh.io"
+				}
+			],
+			"categories": [
+				"deployment"
+			],
+			"official": true,
+			"tags": [],
+			"icon": {
+				"type": "image",
+				"size": {
+					"large": {
+						"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/incubating/helm/icon.jpg"
+					}
+				}
+			},
+			"examples": [
+				{
+					"description": "example-1",
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"deploy": {
+								"type": "helmfile",
+								"arguments": {
+									"WORKING_DIRECTORY": "/codefresh/volume/${{CF_REPO_NAME}}",
+									"COMMANDS": "diff",
+									"ENVIRONMENT": "development",
+									"KUBE_CONTEXT": "dev_cluster"
+								}
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-11-13T07:35:22.549Z",
+			"updated_at": "2019-11-13T07:35:22.549Z",
+			"latest": true,
+			"id": "5dcbb23ac4c37735843f55b1"
+		},
+		"spec": {
+			"arguments": "{\n    \"definitions\": {},\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"patterns\": [],\n    \"required\": [\n      \"COMMANDS\"\n    ],\n    \"properties\": {\n        \"COMMANDS\": {\n            \"type\": \"string\",\n            \"description\": \"helmfle commands, executed in order provided\",\n            \"examples\": [\"diff\",\"diff,apply\"],\n            \"default\": \"version\"\n        },\n        \"WORKING_DIRECTORY\": {\n            \"type\": \"string\",\n            \"description\": \"\",\n            \"examples\": [\"/codefresh/volume/${{CF_REPO_NAME}}\"],\n            \"default\": \"/codefresh/volume\"\n        },\n        \"HELMFILE_VERSION\": {\n            \"type\": \"string\",\n            \"description\": \"Version of helmfile binary\",\n            \"default\": \"0.90.2\",\n            \"enum\": [ \"0.90.2\", \"0.90.7\" ]\n        },           \n        \"HELM_BINARY\": {\n            \"type\": \"string\",\n            \"description\": \"path to helm binary\",\n            \"default\": \"\"\n        },\n        \"FILE\": {\n            \"type\": \"string\",\n            \"description\": \"load config from file or directory. defaults to helmfile.yaml or `helmfile.d`(means `helmfile.d/*.yaml`) in this preference\",\n            \"default\": \"\"\n        },\n        \"ENVIRONMENT\": {\n            \"type\": \"string\",\n            \"description\": \"specify the environment name. defaults to default\",\n            \"default\": \"\"\n        },\n        \"STATE_VALUES_SET\": {\n            \"type\": \"string\",\n            \"description\": \"set state values on the command line (can specify multiple or separate values with commas: key1=val1,key2=val2)\",\n            \"default\": \"\"\n        },\n        \"STATE_VALUES_FILE\": {\n            \"type\": \"string\",\n            \"description\": \"specify state values in a YAML file\",\n            \"default\": \"\"\n        },\n        \"QUIET\": {\n            \"type\": \"boolean\",\n            \"description\": \"Silence output. Equivalent to log-level warn\",\n            \"default\": false\n        },\n        \"KUBE_CONTEXT\": {\n            \"type\": \"string\",\n            \"description\": \"Set kubectl context. Uses current context by default\",\n            \"default\": \"\"\n        },\n        \"NO_COLOR\": {\n            \"type\": \"boolean\",\n            \"description\": \"Output without color\",\n            \"default\": false\n        },\n        \"LOG_LEVEL\": {\n            \"type\": \"string\",\n            \"description\": \"Set log level, default info\",\n            \"default\": \"\"\n        },\n        \"NAMESPACE\": {\n            \"type\": \"string\",\n            \"description\": \"Set namespace. Uses the namespace set in the context by default, and is available in templates as {{ .Namespace }}\",\n            \"default\": \"\"\n        },\n        \"SELECTOR\": {\n            \"type\": \"string\",\n            \"description\": \"Only run using the releases that match labels. Labels can take the form of foo=bar or foo!=bar.  A release must match all labels in a group in order to be used. Multiple groups can be specified at once.  --selector tier=frontend,tier!=proxy --selector tier=backend. Will match all frontend, non-proxy releases AND all backend releases. The name of a release can be used as a label. --selector name=myrelease\",\n            \"default\": \"\"\n        },\n        \"ALLOW_NO_MATCHING_RELEASE\": {\n            \"type\": \"boolean\",\n            \"description\": \"Do not exit with an error code if the provided selector has no matching releases.\",\n            \"default\": false\n        },\n        \"INTERACTIVE\": {\n            \"type\": \"boolean\",\n            \"description\": \"Request confirmation before attempting to modify clusters\",\n            \"default\": false\n        },\n        \"HELP\": {\n            \"type\": \"boolean\",\n            \"description\": \"show help\",\n            \"default\": false\n        },\n        \"VERSION\": {\n            \"type\": \"boolean\",\n            \"description\": \"print the version\",\n            \"default\": false\n        },\n        \"DEPS_PS\": {\n            \"type\": \"string\",\n            \"description\": \"String of command options and arguments for, helmfile deps - update charts based on the contents of requirements.yaml\",\n            \"default\": \"\"\n        },\n        \"REPOS_PS\": {\n            \"type\": \"string\",\n            \"description\": \"String of command options and arguments for, helmfile repos - sync repositories from state file (helm repo add && helm repo update)\",\n            \"default\": \"\"\n        },\n        \"CHARTS_PS\": {\n            \"type\": \"string\",\n            \"description\": \"String of command options and arguments for, helmfile charts - DEPRECATED: sync releases from state file (helm upgrade --install)\",\n            \"default\": \"\"\n        },\n        \"DIFF_PS\": {\n            \"type\": \"string\",\n            \"description\": \"String of command options and arguments for, helmfile diff - diff releases from state file against env (helm diff)\",\n            \"default\": \"\"\n        },\n        \"TEMPLATE_PS\": {\n            \"type\": \"string\",\n            \"description\": \"String of command options and arguments for, helmfile template - template releases from state file against env (helm template)\",\n            \"default\": \"\"\n        },\n        \"LINT_PS\": {\n            \"type\": \"string\",\n            \"description\": \"String of command options and arguments for, helmfile lint - lint charts from state file (helm lint)\",\n            \"default\": \"\"\n        },\n        \"SYNC_PS\": {\n            \"type\": \"string\",\n            \"description\": \"String of command options and arguments for, helmfile sync - sync all resources from state file (repos, releases and chart deps)\",\n            \"default\": \"\"\n        },\n        \"APPLY_PS\": {\n            \"type\": \"string\",\n            \"description\": \"String of command options and arguments for, helmfile apply - apply all resources from state file only when there are changes\",\n            \"default\": \"\"\n        },\n        \"STATUS_PS\": {\n            \"type\": \"string\",\n            \"description\": \"String of command options and arguments for, helmfile status - retrieve status of releases in state file\",\n            \"default\": \"\"\n        },\n        \"DELETE_PS\": {\n            \"type\": \"string\",\n            \"description\": \"String of command options and arguments for, helmfile delete - DEPRECATED: delete releases from state file (helm delete)\",\n            \"default\": \"\"\n        },\n        \"DESTROY_PS\": {\n            \"type\": \"string\",\n            \"description\": \"String of command options and arguments for, helmfile destroy - deletes and then purges releases\",\n            \"default\": \"\"\n        },\n        \"TEST_PS\": {\n            \"type\": \"string\",\n            \"description\": \"String of command options and arguments for, helmfile test - test releases from state file (helm test)\",\n            \"default\": \"\"\n        }\n    }\n}",
+			"steps": {
+				"main": {
+					"name": "helmfile",
+					"image": "codefreshplugins/cfstep-helmfile:${{HELMFILE_VERSION}}",
+					"environment": [
+						"COMMANDS=${{COMMANDS}}",
+						"WORKING_DIRECTORY=${{WORKING_DIRECTORY}}",
+						"HELMFILE_VERSION=${{HELMFILE_VERSION}}",
+						"HELM_BINARY=${{HELM_BINARY}}",
+						"FILE=${{FILE}}",
+						"ENVIRONMENT=${{ENVIRONMENT}}",
+						"STATE_VALUES_SET=${{STATE_VALUES_SET}}",
+						"STATE_VALUES_FILE=${{STATE_VALUES_FILE}}",
+						"QUIET=${{QUIET}}",
+						"KUBE_CONTEXT=${{KUBE_CONTEXT}}",
+						"NO_COLOR=${{NO_COLOR}}",
+						"LOG_LEVEL=${{LOG_LEVEL}}",
+						"NAMESPACE=${{NAMESPACE}}",
+						"SELECTOR=${{SELECTOR}}",
+						"ALLOW_NO_MATCHING_RELEASE=${{ALLOW_NO_MATCHING_RELEASE}}",
+						"INTERACTIVE=${{INTERACTIVE}}",
+						"HELP=${{HELP}}",
+						"VERSION=${{VERSION}}",
+						"DEPS_PS=${{DEPS_PS}}",
+						"REPOS_PS=${{REPOS_PS}}",
+						"CHARTS_PS=${{CHARTS_PS}}",
+						"DIFF_PS=${{DIFF_PS}}",
+						"TEMPLATE_PS=${{TEMPLATE_PS}}",
+						"LINT_PS=${{LINT_PS}}",
+						"SYNC_PS=${{SYNC_PS}}",
+						"APPLY_PS=${{APPLY_PS}}",
+						"STATUS_PS=${{STATUS_PS}}",
+						"DELETE_PS=${{DELETE_PS}}",
+						"DESTROY_PS=${{DESTROY_PS}}",
+						"TEST_PS=${{TEST_PS}}"
+					]
+				}
+			}
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"version": "0.0.2",
+			"name": "heroku-deployer",
+			"isPublic": true,
+			"description": "Deploy to heroku via codefresh pipeline",
+			"sources": [
+				"https://github.com/codefresh-io/heroku-deployer.git"
+			],
+			"stage": "graduated",
+			"maintainers": [
+				{
+					"name": "Nazar Rohozhuk",
+					"email": "nazar@codefresh.io"
+				}
+			],
+			"categories": [
+				"deployment"
+			],
+			"official": true,
+			"icon": {
+				"type": "svg",
+				"url": "https://brand.heroku.com/static/media/heroku-logo-stroke-gradient.bb410472.svg",
+				"background": "#333D47"
+			},
+			"examples": [
+				{
+					"description": "Deploy app from current repo",
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"deployToHeroku": {
+								"type": "heroku-deployer",
+								"description": "Deploy to heroku",
+								"title": "Deploy to heroku",
+								"stage": "deploy",
+								"arguments": {
+									"APP_NAME": "codefresh-test",
+									"EMAIL": "example@codefresh.io",
+									"API_TOKEN": "00000000-0aa0-0a00-a000-00a00aa00000"
+								}
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-10-21T11:45:48.999Z",
+			"updated_at": "2019-10-21T11:45:48.999Z",
+			"latest": true,
+			"id": "5dad9a6db66aa88caf21540f"
+		},
+		"spec": {
+			"arguments": "{\n    \"definitions\": {},\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"patterns\": [],\n    \"required\": [\n        \"APP_NAME\",\n        \"EMAIL\",\n        \"API_TOKEN\"\n    ],\n    \"properties\": {\n        \"APP_NAME\": {\n            \"type\": \"string\",\n            \"description\": \"Name of application\",\n            \"examples\": [\"codefresh\"]\n        },\n        \"EMAIL\": {\n            \"type\": \"string\",\n            \"description\": \"User email\",\n            \"examples\": [\"example@codefresh.io\"]\n        },\n        \"API_TOKEN\": {\n            \"type\": \"string\",\n            \"description\": \"Token from heroku account settings\",\n            \"examples\": [\"eee30059-2dd1-4b06-a895-32e11bd71053\"]\n        },\n        \"PATH\": {\n            \"type\": \"string\",\n            \"examples\": [\"${{CF_VOLUME_PATH}}/build\"],\n            \"description\": \"Path to source for deploy\"\n        }\n    }\n}",
+			"steps": {
+				"herokuDeployer": {
+					"title": "herokuDeployer",
+					"image": "nazarcodefresh/heroku-cli:alpine",
+					"commands": [
+						"printf \"machine api.heroku.com\\n  login ${{EMAIL}}\\n  password ${{API_TOKEN}}\\nmachine git.heroku.com\\n  login ${{EMAIL}}\\n  password ${{API_TOKEN}}\\n\" > ~/.netrc",
+						"cd ${{CF_VOLUME_PATH}}/${{CF_REPO_NAME}}",
+						"heroku create ${{APP_NAME}} || true",
+						"heroku git:remote --app ${{APP_NAME}}",
+						"git push heroku master --force"
+					]
+				}
+			}
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "build",
+			"isPublic": true,
+			"description": "Build a Docker image",
+			"sources": [
+				"https://github.com/codefresh-io/steps/tree/master/graduated/build"
+			],
+			"stage": "graduated",
+			"categories": [
+				"featured",
+				"docker"
+			],
+			"official": true,
+			"icon": {
+				"type": "svg",
+				"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/graduated/build/icon-2.svg",
+				"background": "#81D4FA"
+			},
+			"maintainers": [
+				{
+					"name": "Codefresh INC"
+				}
+			],
+			"examples": [
+				{
+					"description": "Basic usage of build step to build step based on parameter Codefresh injects with tag master and dockerfile named 'Dockerfile'",
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"Docker-Build": {
+								"title": "Building docker image",
+								"type": "build",
+								"arguments": {
+									"image_name": "${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}",
+									"tag": "master"
+								}
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-06-25T06:01:05.994Z",
+			"updated_at": "2019-07-21T11:04:58.532Z",
+			"latest": true,
+			"version": "0.0.1",
+			"id": "5d11b8a2908ad51baaf271cd"
+		},
+		"spec": {
+			"arguments": "{\n    \"definitions\": {},\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n     \"patterns\": [],\n     \"required\": [\n     \"image_name\"\n     ],\n    \"properties\": {\n        \"working_directory\": {\n            \"type\": \"string\",\n            \"description\": \"The directory in which the build command is executed. It can be an explicit path in the container’s file system, or a variable that references another step. The default is ${{main_clone}}.\"\n        },\n        \"dockerfile\": {\n            \"oneOf\": [\n            {\n                \"type\": \"string\"\n            },\n            {\n                \"type\": \"object\",\n                \"properties\": {\n                \"content\": {\n                    \"type\": \"string\"\n                }\n                },\n                \"additionalProperties\": false,\n                \"patterns\": [\n\n                ]\n            }\n            ],\n            \"default\": \"Dockerfile\",\n            \"description\": \"The path to the Dockerfile from which the image is built. The default is Dockerfile.\"\n        },\n        \"no_cache\": {\n            \"type\": \"boolean\",\n            \"description\": \"Disable Docker engine cache for the build. <a href=\\\"https://codefresh.io/docs/docs/troubleshooting/common-issues/disabling-codefresh-caching-mechanisms/\\\">more info</a>\"\n        },\n        \"no_cf_cache\": {\n            \"type\": \"boolean\",\n            \"description\": \"Disable Codefresh build optimization for the build. <a href=\\\"https://codefresh.io/docs/docs/troubleshooting/common-issues/disabling-codefresh-caching-mechanisms/\\\">more info</a>\"\n        },\n        \"squash\": {\n            \"type\": \"boolean\"\n        },\n        \"image_name\": {\n            \"type\": \"string\",\n            \"description\": \"The name for the image you build.\"\n        },\n        \"build_arguments\": {\n            \"type\": \"array\",\n            \"items\": {\n            \"type\": \"string\"\n            },\n            \"description\": \"A set of <a href=\\\"https://docs.docker.com/engine/reference/commandline/build/#set-build-time-variables-build-arg\\\">Docker build arguments</a> to pass to the build process.\"\n        },\n        \"tag\": {\n            \"type\": \"string\",\n            \"description\": \"The tag that is assigned to the image you build. The default is the name of the branch or revision that is built.\"\n        },\n        \"target\": {\n            \"type\": \"string\",\n            \"description\": \"target stage in a multistage build (build will run until this stage)\"\n        }\n    }\n}\n",
+			"steps": null
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "composition",
+			"isPublic": true,
+			"description": "Run a docker-compose",
+			"sources": [
+				"https://github.com/codefresh-io/steps/tree/master/graduated/composition"
+			],
+			"stage": "graduated",
+			"official": true,
+			"categories": [
+				"featured",
+				"docker"
+			],
+			"icon": {
+				"type": "svg",
+				"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/graduated/composition/icon-2.svg",
+				"background": "#E9FFFD"
+			},
+			"maintainers": [
+				{
+					"name": "Codefresh INC"
+				}
+			],
+			"examples": [
+				{
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"Composition": {
+								"title": "Running Composition",
+								"type": "composition",
+								"arguments": {
+									"composition": {
+										"version": "2",
+										"services": {
+											"db": {
+												"image": "postgres"
+											}
+										}
+									},
+									"composition_candidates": {
+										"test_service": {
+											"image": "${{build_step}}",
+											"command": "gulp integration_test",
+											"working_dir": "/app",
+											"environment": [
+												"key=value"
+											]
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-06-25T06:01:05.994Z",
+			"updated_at": "2019-08-25T12:33:39.810Z",
+			"latest": true,
+			"version": "0.0.1",
+			"id": "5d11b8a2908ad5d3e3f271cb"
+		},
+		"spec": {
+			"arguments": "{\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"definitions\": {},\n    \"type\": \"object\",\n    \"additionalProperties\": true,\n    \"patterns\": [],\n    \"required\": [\"composition\", \"composition_candidates\"],\n    \"properties\": {\n        \"working_directory\": {\n            \"type\": \"string\",\n            \"description\": \"The directory in which to search for the composition file. It can be an explicit path in the container’s file system, or a variable that references another step. The default is ${{main_clone}}. Note that this is completely different from working_dir which is on the service level.\"\n        },\n        \"composition\": {\n            \"oneOf\": [\n            {\n                \"type\": \"string\"\n            },\n            {\n                \"type\": \"object\",\n                \"properties\": {},\n                \"additionalProperties\": true,\n                \"patterns\": []\n            }],\n            \"description\": \"The composition you want to run. It can be an inline YAML definition, a path to a composition file on the file system, or the logical name of a composition stored in the Codefresh system. We support most features of <a href=\\\"https://docs.docker.com/compose/compose-file/compose-file-v2/\\\">Docker compose version 2.0</a> and <a href=\\\"https://docs.docker.com/compose/compose-file/\\\">3.0</a>\"\n        },\n        \"composition_candidates\": {\n            \"type\": \"object\",\n            \"properties\": {},\n            \"additionalProperties\": true,\n            \"patterns\": [],\n            \"description\": \"The definition of the service to monitor. Each candidate has a single command parameter that decides what will be tested.\",\n            \"examples\": [\"test_service:\\n    image: ${{build_step}}\\n    command: gulp integration_test\\n    working_dir: /app\\n    environment:\\n      - key=value\"]\n        },\n        \"composition_variables\": {\n            \"type\": \"array\",\n            \"items\": {\n                \"type\": \"string\"\n            },\n            \"description\": \"A set of environment variables to substitute in the composition. Notice that these variables are docker-compose variables and NOT environment variables\"\n        }\n    }\n}\n",
+			"steps": null
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "launch-composition",
+			"isPublic": true,
+			"description": "Run and externaly expose a docker-compose",
+			"sources": [
+				"https://github.com/codefresh-io/steps/tree/master/graduated/launch-composition"
+			],
+			"stage": "graduated",
+			"official": true,
+			"categories": [
+				"featured",
+				"docker"
+			],
+			"icon": {
+				"type": "svg",
+				"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/graduated/launch-composition/icon-2.svg",
+				"background": "#D9E6F8"
+			},
+			"maintainers": [
+				{
+					"name": "Codefresh INC"
+				}
+			],
+			"examples": [
+				{
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"Launch-Composition": {
+								"title": "Running docker image",
+								"type": "launch-composition",
+								"arguments": {
+									"composition": {
+										"version": "2",
+										"services": {
+											"app": {
+												"image": "owner/app:latest"
+											},
+											"db": {
+												"image": "mongo"
+											}
+										}
+									},
+									"environment_name": "environment name"
+								}
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-06-25T06:01:06.116Z",
+			"updated_at": "2019-08-25T12:33:39.809Z",
+			"latest": true,
+			"version": "0.0.1",
+			"id": "5d11b8a299f5e006a6788322"
+		},
+		"spec": {
+			"arguments": "{\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"definitions\": {},\n    \"type\": \"object\",\n    \"additionalProperties\": true,\n    \"patterns\": [],\n    \"required\": [\"composition\"],\n    \"properties\": {\n        \"working_directory\": {\n            \"type\": \"string\",\n            \"description\": \"The directory in which to search for the composition file. It can be an explicit path in the container’s file system, or a variable that references another step. The default is ${{main_clone}}.\"\n        },\n        \"composition\": {\n            \"oneOf\": [\n            {\n                \"type\": \"string\"\n            },\n            {\n                \"type\": \"object\",\n                \"properties\": {},\n                \"additionalProperties\": true,\n                \"patterns\": []\n            }],\n            \"description\": \"The composition you want to run. It can be an inline YAML definition, a path to a composition file on the file system, or the logical name of a composition stored in the Codefresh system.\"\n        },\n        \"composition_variables\": {\n            \"type\": \"array\",\n            \"items\": {\n                \"type\": \"string\"\n            },\n            \"description\": \"A set of environment variables to substitute in the composition.\"\n        }\n    }\n}\n",
+			"steps": null
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "push",
+			"isPublic": true,
+			"description": "Push a docker image to a registry",
+			"sources": [
+				"https://github.com/codefresh-io/steps/tree/master/graduated/push"
+			],
+			"stage": "graduated",
+			"official": true,
+			"categories": [
+				"featured",
+				"docker"
+			],
+			"icon": {
+				"type": "svg",
+				"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/graduated/push/icon-2.svg",
+				"background": "#0A375A"
+			},
+			"maintainers": [
+				{
+					"name": "Codefresh INC"
+				}
+			],
+			"examples": [
+				{
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"Push": {
+								"type": "push",
+								"arguments": {
+									"candidate": "${{build_step_name}}",
+									"tag": "latest",
+									"image_name": "codefresh/app",
+									"registry": "my-registry"
+								}
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-06-25T06:01:06.116Z",
+			"updated_at": "2019-08-25T12:33:39.810Z",
+			"latest": true,
+			"version": "0.0.1",
+			"id": "5d11b8a299f5e00717788326"
+		},
+		"spec": {
+			"arguments": "{\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"definitions\": {},\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"patterns\": [],\n    \"required\": [\"candidate\"],\n    \"properties\": {\n        \"candidate\": {\n            \"type\": \"string\",\n            \"description\": \"The identifier of the image to push to the remote Docker registry. It can be an explicit identifier of an image to push, or a variable that references a Build step.\"\n        },\n        \"registry\": {\n            \"type\": \"string\",\n            \"description\": \"The registry logical name of one of the inserted registries from the integration view. The default value will be your default registry.\"\n        },\n        \"credentials\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"username\": {\n                    \"type\": \"string\"\n                },\n                \"password\": {\n                    \"type\": \"string\"\n                }\n            },\n            \"examples\": [\"username: user\\npassword: credentials\"],\n            \"additionalProperties\": false,\n            \"patterns\": [],\n            \"required\": [\"username\", \"password\"]\n        },\n        \"tag\": {\n            \"type\": \"string\",\n            \"description\": \"The tag under which to push the image. Use either this or tags. The default is latest.\"\n        },\n        \"tags\": {\n            \"type\": \"array\",\n            \"items\": {\n                \"type\": \"string\"\n            },\n            \"description\": \"Multiple tags under which to push the image\"\n        },\n        \"image_name\": {\n            \"type\": \"string\",\n            \"description\": \"The tagged image name that will be used The default value will be the same image name as of the candidate.\"\n        }\n    }\n}\n",
+			"steps": null
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "codefresh-run",
+			"isPublic": true,
+			"description": "Run a pipeline by id or name and attach the created build logs",
+			"sources": [
+				"https://github.com/codefresh-io/steps/tree/master/graduated/codefresh-run"
+			],
+			"stage": "graduated",
+			"maintainers": [
+				{
+					"name": "Itai Gendler",
+					"email": "itai@codefresh.io"
+				}
+			],
+			"categories": [
+				"featured"
+			],
+			"official": true,
+			"tags": [],
+			"icon": {
+				"type": "svg",
+				"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/graduated/codefresh-run/icon-1.svg",
+				"background": "#C7DCFF"
+			},
+			"examples": [
+				{
+					"description": "example-1",
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"codefresh-run": {
+								"title": "Run a codefresh pipeline",
+								"type": "codefresh-run",
+								"arguments": {
+									"PIPELINE_ID": "project-name/pip_name",
+									"TRIGGER_ID": "trigger_id",
+									"CONTEXT": [
+										"context1",
+										"context2"
+									],
+									"VARIABLE": [
+										"key1=val1",
+										"key2=val2"
+									]
+								}
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-07-07T09:57:01.998Z",
+			"updated_at": "2019-09-18T08:15:28.700Z",
+			"latest": true,
+			"version": "0.0.1",
+			"id": "5d21c1eea7e22e07a27ea80f"
+		},
+		"spec": {
+			"arguments": "{\n    \"definitions\": {},\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"patterns\": [],\n    \"required\": [\n        \"PIPELINE_ID\"\n    ],\n    \"properties\": {\n        \"PIPELINE_ID\": {\n            \"type\": \"string\",\n            \"description\": \"Pipeline name or id\"\n        },\n        \"TRIGGER_ID\": {\n            \"type\": \"string\",\n            \"description\": \"Trigger id or name\",\n            \"default\": \"\"\n        },\n        \"BRANCH\": {\n            \"type\": \"string\",\n            \"description\": \"Branch\",\n            \"examples\": [\"master\"],\n            \"default\": \"\"\n        },\n        \"SHA\": {\n            \"type\": \"string\",\n            \"description\": \"Set commit sha\",\n            \"examples\": [\"c777d850ff67969cb4eb9e041d7edeb367705e12\"],\n            \"default\": \"\"\n        },\n        \"NO_CACHE\": {\n            \"type\": \"boolean\",\n            \"description\": \"Ignore cached images\",\n            \"default\": false\n        },\n        \"NO_CF_CACHE\": {\n               \"type\": \"boolean\",\n               \"description\": \"Ignore Codefresh cache optimizations\",\n               \"default\": false\n           },\n        \"ENABLE_NOTIFICATIONS\": {\n            \"type\": \"boolean\",\n            \"description\": \"Report notifications about pipeline execution\",\n            \"default\": false\n        },\n        \"RESET_VOLUME\": {\n              \"type\": \"boolean\",\n              \"description\": \"Reset pipeline cached volume\",\n              \"default\": false\n        },\n        \"DETACH\": {\n             \"type\": \"boolean\",\n             \"description\": \"Run pipeline and print build ID\",\n             \"default\": false\n         },\n        \"CONTEXT\": {\n             \"type\": \"array\",\n             \"items\": {\n                 \"type\": \"string\"\n             },\n             \"description\": \"Run pipeline with contexts\",\n             \"examples\": [\"git-context-1\"],\n             \"default\": []\n         },\n        \"VARIABLE\": {\n             \"type\": \"array\",\n             \"items\": {\n                 \"type\": \"string\"\n             },\n             \"description\": \"Set build variables\",\n             \"examples\": [\"key=val\"],\n             \"default\": []\n         },\n        \"ONLY\": {\n              \"type\": \"array\",\n              \"items\": {\n                  \"type\": \"string\"\n              },\n              \"description\": \"run only specifc steps\",\n              \"examples\": [\"step1\", \"step2\"],\n              \"default\": []\n          },\n        \"SKIP\": {\n              \"type\": \"array\",\n              \"items\": {\n                  \"type\": \"string\"\n              },\n              \"description\": \"skip specifc steps\",\n              \"examples\": [\"step1\", \"step2\"],\n              \"default\": []\n          }\n    }\n}",
+			"steps": {
+				"init": {
+					"title": "init",
+					"image": "alpine",
+					"commands": [
+						"mkdir -p /codefresh/volume/${CF_BLOCK_NAME} && cat /dev/null > /codefresh/volume/${CF_BLOCK_NAME}/exporter && chmod 774 /codefresh/volume/${CF_BLOCK_NAME}/exporter && cat > /codefresh/volume/${CF_BLOCK_NAME}/exporter <<zzz23EndOfMessagezzz23\nkey=\\$1\nstr=\\$2\n\nfinal=\"\"\nIFS=',' # space is set as delimiter\nread -ra ADDR <<< \"\\$str\" # str is read into an array as tokens separated by IFS\nfor i in \"\\${ADDR[@]}\"; do # access each element of array\n    final=\"\\$final -\\$key \\$i\"\ndone\nIFS=' ' # reset to default value after usage\necho \\$final\nzzz23EndOfMessagezzz23\n#end"
+					]
+				},
+				"first": {
+					"name": "step1",
+					"image": "codefresh/cli",
+					"commands": [
+						"export BUILD_ID=$(codefresh run ${{PIPELINE_ID}} $([ \"${{CONTEXT}}\" ] && bash /codefresh/volume/${CF_BLOCK_NAME}/exporter c \"${{CONTEXT}}\") $([ \"${{VARIABLE}}\" ] && bash /codefresh/volume/${CF_BLOCK_NAME}/exporter v \"${{VARIABLE}}\") $([ \"${{ONLY}}\" ] && bash /codefresh/volume/${CF_BLOCK_NAME}/exporter only \"${{ONLY}}\") $([ \"${{SKIP}}\" ] && bash /codefresh/volume/${CF_BLOCK_NAME}/exporter skip \"${{SKIP}}\") -d $([ \"${{TRIGGER_ID}}\" ] && echo \"-t ${{TRIGGER_ID}}\") $([ \"${{BRANCH}}\" ] && echo \"-b ${{BRANCH}}\") $([ \"${{SHA}}\" ] && echo \"-s ${{SHA}}\") $([ \"${{NO_CACHE}}\" == \"true\" ] && echo \"--no-cache\") $([ \"${{NO_CF_CACHE}}\" == \"true\" ] && echo \"--no-cf-cache\") $([ \"${{ENABLE_NOTIFICATIONS}}\" == \"true\" ] && echo \"--enable-notifications\") $([ \"${{RESET_VOLUME}}\" == \"true\" ] && echo \"--reset-volume\") )",
+						"echo ${CF_STEP_NAME}_CF_OUTPUT_URL=\"${{CF_URL}}/build/$BUILD_ID\" >> ${{CF_VOLUME_PATH}}/env_vars_to_export",
+						"rm -rf ${{CF_VOLUME_PATH}}/${CF_BLOCK_NAME}-step1-output",
+						"echo $BUILD_ID >> ${{CF_VOLUME_PATH}}/${CF_BLOCK_NAME}-step1-output"
+					]
+				},
+				"second": {
+					"name": "step1",
+					"image": "codefresh/cli",
+					"commands": [
+						"export BUILD_ID=$(cat ${{CF_VOLUME_PATH}}/${CF_BLOCK_NAME}-step1-output)",
+						"echo \"Retrieving logs for build $BUILD_ID\"",
+						"codefresh logs -f $BUILD_ID",
+						"codefresh wait $BUILD_ID"
+					],
+					"when": {
+						"condition": {
+							"all": {
+								"executeIfNotInDetached": "'${{DETACH}}' != 'true'"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "deploy",
+			"isPublic": true,
+			"description": "Deploy",
+			"sources": [
+				"https://github.com/codefresh-io/steps/tree/master/graduated/deploy"
+			],
+			"stage": "graduated",
+			"official": true,
+			"categories": [
+				"featured",
+				"k8"
+			],
+			"icon": {
+				"type": "svg",
+				"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/graduated/deploy/icon-2.svg",
+				"background": "#326DE6"
+			},
+			"maintainers": [
+				{
+					"name": "Codefresh INC"
+				}
+			],
+			"examples": [
+				{
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"Deploy": {
+								"title": "deploying to cluster",
+								"type": "deploy",
+								"arguments": {
+									"kind": "kubernetes",
+									"cluster": "myDemoAKSCluster",
+									"namespace": "demo",
+									"service": "my-python-app"
+								}
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-06-25T06:01:05.847Z",
+			"updated_at": "2019-08-25T12:33:39.810Z",
+			"latest": true,
+			"version": "0.0.1",
+			"id": "5d11b8a2908ad5c177f271c9"
+		},
+		"spec": {
+			"arguments": "{\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"definitions\": {},\n    \"type\": \"object\",\n    \"additionalProperties\": true,\n    \"patterns\": [],\n    \"required\": [\"kind\", \"cluster\", \"namespace\"],\n    \"properties\": {\n        \"kind\": {\n            \"type\": \"string\",\n            \"description\": \"Currently only kubernetes is supported\"\n        },\n        \"cluster\": {\n            \"type\": \"string\",\n            \"description\": \"Name of your K8s cluster as found in the dashboard\"\n        },\n        \"namespace\": {\n            \"type\": \"string\",\n            \"description\": \"Namespace where the deployment will take place\"\n        },\n        \"file_path\": {\n            \"type\": \"string\",\n            \"description\": \"A deployment manifest. You need to provide service OR file_path\"\n        },\n        \"timeout\": {\n            \"type\": \"number\",\n            \"description\": \"Seconds to wait for the deployment to be completed. Default is 120 seconds\"\n        },\n        \"service\": {\n            \"oneOf\": [{\n                \"type\": [\"array\", \"boolean\", \"number\", \"object\", \"string\", \"null\"]\n            }, {\n                \"type\": \"string\"\n            }],\n            \"description\": \"Name of the existing service that will updated. You need to provide service OR file_path\"\n        },\n        \"candidate\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"image\": {\n                    \"type\": \"string\"\n                },\n                \"registry\": {\n                    \"type\": \"string\"\n                }\n            },\n            \"examples\": [\"image: ${{build_step}}\\nregistry: dockerhub\"],\n            \"additionalProperties\": false,\n            \"patterns\": [],\n            \"required\": [\"image\", \"registry\"],\n            \"description\": \"Docker image that will be deployed. Only valid if service is defined. Should contain image and name of registry as it appears in the <a href=\\\"https://codefresh.io/docs/docs/docker-registries/external-docker-registries/\\\">registry integration page</a>.\"\n        }\n    }\n}\n",
+			"steps": null
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "git-clone",
+			"isPublic": true,
+			"description": "Clone a git repository",
+			"sources": [
+				"https://github.com/codefresh-io/steps/tree/master/graduated/git-clone"
+			],
+			"stage": "graduated",
+			"categories": [
+				"featured",
+				"git"
+			],
+			"official": true,
+			"icon": {
+				"type": "svg",
+				"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/graduated/git-clone/icon-2.svg",
+				"background": "#0B3E49"
+			},
+			"maintainers": [
+				{
+					"name": "Codefresh INC"
+				}
+			],
+			"examples": [
+				{
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"Clone": {
+								"title": "Running docker image",
+								"type": "git-clone",
+								"arguments": {
+									"working_directory": "${{main_clone}}",
+									"repo": "${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}",
+									"git": "github",
+									"revision": "${{CF_REVISION}}"
+								}
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-06-25T06:01:06.116Z",
+			"updated_at": "2019-08-25T12:33:40.068Z",
+			"latest": true,
+			"version": "0.0.1",
+			"id": "5d11b8a299f5e034ca788320"
+		},
+		"spec": {
+			"arguments": "{\n  \"definitions\": {},\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n  \"type\": \"object\",\n  \"additionalProperties\": false,\n  \"patterns\": [],\n  \"required\": [\"repo\"],\n  \"properties\": {\n      \"working_directory\": {\n          \"type\": \"string\",\n          \"description\": \"The directory to which the repository is cloned. It can be an explicit path in the container’s file system, or a variable that references another step. The default value is ${{main_clone}}.\"\n      },\n      \"repo\": {\n          \"type\": \"string\",\n          \"description\": \"path of the repository without the domain name in the form of my_username/my_repo\"\n      },\n      \"revision\": {\n          \"type\": \"string\",\n          \"description\": \"The revision of the repository you are checking out. It can be a revision hash or a branch name. The default value is master.\"\n      },\n      \"credentials\": {\n          \"type\": \"object\",\n          \"properties\": {\n              \"username\": {\n                  \"type\": \"string\"\n              },\n              \"password\": {\n                  \"type\": \"string\"\n              }\n          },\n          \"examples\": [\"username: user\\npassword: credentials\"],\n          \"additionalProperties\": false,\n          \"patterns\": [],\n          \"required\": [\"username\", \"password\"],\n          \"description\": \"Credentials to access the repository, if it requires authentication. It can an object containing username and password fields. Credentials are optional if you are using the built-in git integrations.\"\n      },\n      \"git\": {\n          \"type\": \"string\",\n          \"description\": \"The name of the git integration you want to use. If left empty, Codefresh will attempt to use the git provider that was used during account sign-up. Note that this might have unexpected results if you are changing your Git integrations.\"\n      }\n  }\n}\n",
+			"steps": null
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "aws-parameter-store",
+			"version": "0.0.1",
+			"isPublic": true,
+			"description": "Gathers parameters from AWS Parameter Store",
+			"sources": [
+				"https://github.com/codefresh-contrib/cfstep-aws-parameter-store/tree/master/"
+			],
+			"stage": "incubating",
+			"maintainers": [
+				{
+					"name": "Dustin Van Buskirk",
+					"email": "dustinb@codefresh.io"
+				}
+			],
+			"categories": [
+				"utility"
+			],
+			"official": true,
+			"tags": [],
+			"icon": {
+				"type": "svg",
+				"url": "https://cdn.jsdelivr.net/gh/codefresh-contrib/cfstep-aws-parameter-store/icon.svg",
+				"background": "#f4f4f4"
+			},
+			"examples": [
+				{
+					"description": "AWS CLI Credentials",
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"GetParameters": {
+								"type": "aws-parameter-store",
+								"arguments": {
+									"AWS_ACCESS_KEY_ID": "${{AWS_ACCESS_KEY_ID}}",
+									"AWS_DEFAULT_REGION": "${{AWS_DEFAULT_REGION}}",
+									"AWS_SECRET_ACCESS_KEY": "${{AWS_SECRET_ACCESS_KEY}}",
+									"PARAMETERS": "param1 param2"
+								}
+							}
+						}
+					}
+				},
+				{
+					"description": "AWS Credentials file",
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"CreateAWSCredentialsFile": {
+								"image": "alpine:3.10",
+								"title": "Creating AWS Credentials File...",
+								"working_directory": "${{main_clone}}",
+								"commands": [
+									"mkdir -p ${CF_VOLUME_PATH}/.aws",
+									"echo -n $AWS_CREDENTIALS_FILE | base64 -d > ${CF_VOLUME_PATH}/.aws/credentials",
+									"cf_export AWS_SHARED_CREDENTIALS_FILE=${CF_VOLUME_PATH}/.aws/credentials"
+								]
+							},
+							"GetParameters": {
+								"type": "aws-parameter-store",
+								"arguments": {
+									"AWS_DEFAULT_REGION": "us-west-2",
+									"AWS_SHARED_CREDENTIALS_FILE": "${CF_VOLUME_PATH}/.aws/credentials",
+									"AWS_PROFILE": "default",
+									"PARAMETERS": "param1 param2"
+								}
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-10-28T16:18:08.938Z",
+			"updated_at": "2019-10-28T16:18:08.938Z",
+			"latest": true,
+			"id": "5db714c10213d1a85ba1aa08"
+		},
+		"spec": {
+			"arguments": "{\n    \"definitions\": {},\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"patterns\": [],\n    \"required\": [\n        \"AWS_DEFAULT_REGION\",\n        \"PARAMETERS\"\n    ],\n    \"properties\": {\n        \"AWS_ACCESS_KEY_ID\": {\n            \"type\": \"string\",\n            \"default\": \"\",\n            \"description\": \"AWS Access Key, used for CLI Credentials.\"\n        },\n        \"AWS_DEFAULT_REGION\": {\n            \"type\": \"string\",\n            \"default\": \"us-east-1\",\n            \"description\": \"AWS Region, used for CLI Credentials.\"\n        },\n        \"AWS_PROFILE\": {\n            \"type\": \"string\",\n            \"default\": \"default\",\n            \"description\": \"AWS Profile, used for Credentials file.\"\n        },\n        \"AWS_SECRET_ACCESS_KEY\": {\n            \"type\": \"string\",\n            \"default\": \"\",\n            \"description\": \"AWS Secret Access Key, used for CLI Credentials.\"\n        },\n        \"AWS_SHARED_CREDENTIALS_FILE\": {\n            \"type\": \"string\",\n            \"default\": \"/codefresh/volume/.aws/credentials\",\n            \"description\": \"Location of AWS Credentials file, used for Credentials file.\"\n        },\n        \"PARAMETERS\": {\n            \"type\": \"string\",\n            \"description\": \"Space delimited list of parameter names.\"\n        }\n    }\n}",
+			"steps": {
+				"main": {
+					"name": "aws-parameter-store",
+					"image": "codefreshplugins/cfstep-aws-parameter-store",
+					"environment": [
+						"AWS_ACCESS_KEY_ID=${{AWS_ACCESS_KEY_ID}}",
+						"AWS_DEFAULT_REGION=${{AWS_DEFAULT_REGION}}",
+						"AWS_PROFILE=${{AWS_PROFILE}}",
+						"AWS_SECRET_ACCESS_KEY=${{AWS_SECRET_ACCESS_KEY}}",
+						"AWS_SHARED_CREDENTIALS_FILE=${{AWS_SHARED_CREDENTIALS_FILE}}",
+						"PARAMETERS=${{PARAMETERS}}"
+					],
+					"commands": [
+						"aws ssm get-parameters --names ${PARAMETERS} --with-decryption --query \"Parameters[*].{Name:Name,Value:Value}\" | jq '.[] | {\"key\": .Name, \"value\": .Value} | \"\\(.key)=\\(.value)\"' | tr -d '\"' >> /codefresh/volume/env_vars_to_export"
+					]
+				}
+			}
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "jira-ticket",
+			"isPublic": true,
+			"description": "Update a Jira ticket",
+			"sources": [
+				"https://github.com/codefresh-io/steps/tree/master/incubating/jira-ticket"
+			],
+			"stage": "incubating",
+			"maintainers": [
+				{
+					"name": "Ant Weiss",
+					"email": "anton@otomato.link"
+				}
+			],
+			"categories": [
+				"Issue Tracking"
+			],
+			"official": false,
+			"tags": [],
+			"icon": {
+				"type": "svg",
+				"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/incubating/jira-ticket/icon.svg",
+				"background": "#2254D1"
+			},
+			"examples": [
+				{
+					"description": "example-1",
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"UpdateJira": {
+								"type": "jira-ticket",
+								"arguments": {
+									"JIRA_ID": "id",
+									"COMMENT": "my nice comment",
+									"JIRA_URL": "http://jira.com",
+									"JIRA_USR": "user",
+									"JIRA_PWD": "${{JIRA_PASSWORD}}"
+								}
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-07-06T05:57:02.209Z",
+			"updated_at": "2019-09-18T08:15:28.202Z",
+			"latest": true,
+			"version": "0.0.1",
+			"id": "5d20382ea7e22e7edf7ea7fc"
+		},
+		"spec": {
+			"arguments": "{\n    \"definitions\": {},\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"patterns\": [],\n    \"required\": [\n        \"JIRA_URL\",\n        \"JIRA_USR\",\n        \"JIRA_PWD\",\n        \"JIRA_ID\",\n        \"COMMENT\"\n    ],\n    \"properties\": {\n        \"JIRA_ID\": {\n            \"type\": \"string\",\n            \"description\": \"Id of jira ticket\"\n        },\n        \"COMMENT\": {\n            \"type\": \"string\",\n            \"description\": \"Comment to put inside ticket\"\n        },\n        \"JIRA_URL\": {\n            \"type\": \"string\",\n            \"description\": \"Url to Jira instance\"\n        },\n        \"JIRA_USR\": {\n            \"type\": \"string\",\n            \"description\": \"Jira user\"\n        },\n        \"JIRA_PWD\": {\n            \"type\": \"string\",\n            \"description\": \"Jira password\"\n        }\n    }\n}",
+			"steps": {
+				"main": {
+					"name": "jira-cli-docker",
+					"image": "codefreshplugins/jira-cli",
+					"commands": [
+						"yes n | jira-cli update ${{JIRA_ID}} --comment ${{COMMENT}} --jira-url ${{JIRA_URL}} -u ${{JIRA_USR}} -p ${{JIRA_PWD}}"
+					]
+				}
+			}
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "lambda",
+			"isPublic": true,
+			"description": "Deploy a Serverless service (functions and resources) to AWS lambda",
+			"sources": [
+				"https://github.com/codefresh-io/steps/tree/master/incubating/lambda"
+			],
+			"stage": "incubating",
+			"maintainers": [
+				{
+					"name": "Francisco Cocozza",
+					"email": "francisco@codefresh.io"
+				}
+			],
+			"categories": [
+				"serverless",
+				"aws"
+			],
+			"official": false,
+			"tags": [],
+			"icon": {
+				"type": "svg",
+				"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/incubating/lambda/icon.svg",
+				"background": "#f4f4f4"
+			},
+			"examples": [
+				{
+					"description": "example-1",
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"setup": {
+								"image": "alpine:3.7",
+								"title": "generate AWS shared credentials file",
+								"commands": [
+									"mkdir -p .aws",
+									"echo -n $AWS_CREDENTIALS_FILE | base64 -d > ${PWD}/.aws/credentials",
+									"cf_export AWS_SHARED_CREDENTIALS_FILE=${PWD}/.aws/credentials"
+								]
+							},
+							"package": {
+								"image": "codefreshplugins/cf-plugin-serverless",
+								"title": "package serverless service",
+								"working_directory": "${{main_clone}}/examples/aws-node-simple-http-endpoint",
+								"commands": [
+									"serverless package --stage ${AWS_STAGE} --region ${AWS_REGION} --package ${PACKAGE}"
+								]
+							},
+							"deploy": {
+								"type": "serverless",
+								"title": "deploy to AWS with serverless framework",
+								"arguments": {
+									"PACKAGE": "${{PACKAGE}}",
+									"AWS_CREDENTIALS_FILE": "${{AWS_CREDENTIALS_FILE}}",
+									"AWS_SHARED_CREDENTIALS_FILE": "${{AWS_SHARED_CREDENTIALS_FILE}}",
+									"AWS_REGION": "${{AWS_REGION}}",
+									"AWS_PROFILE": "${{AWS_PROFILE}}",
+									"AWS_STAGE": "${{AWS_STAGE}}"
+								}
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-07-06T05:27:02.356Z",
+			"updated_at": "2019-09-18T08:15:28.251Z",
+			"latest": true,
+			"version": "0.0.1",
+			"id": "5d203126a7e22e2f527ea7fb"
+		},
+		"spec": {
+			"arguments": "{\n    \"definitions\": {},\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"patterns\": [],\n    \"required\": [\n        \"PACKAGE\",\n        \"AWS_CREDENTIALS_FILE\",\n        \"AWS_SHARED_CREDENTIALS_FILE\",\n        \"AWS_REGION\",\n        \"AWS_PROFILE\",\n        \"AWS_STAGE\"\n    ],\n    \"properties\": {\n        \"PACKAGE\": {\n            \"type\": \"string\",\n            \"description\": \"Serverless Framework package folder\"\n        },\n        \"AWS_CREDENTIALS_FILE\": {\n            \"type\": \"string\",\n            \"description\": \"Base64 encoded AWS credentials file\"\n        },\n        \"AWS_SHARED_CREDENTIALS_FILE\": {\n            \"type\": \"string\",\n            \"description\": \"Path to shared AWS credentials file\"\n        },\n        \"AWS_REGION\": {\n            \"type\": \"string\",\n            \"description\": \"AWS region\"\n        },\n        \"AWS_PROFILE\": {\n            \"type\": \"string\",\n            \"description\": \"AWS credentials profile\"\n        },\n        \"AWS_STAGE\": {\n            \"type\": \"string\",\n            \"description\": \"AWS API Gateway stage\"\n        }\n    }\n}",
+			"steps": {
+				"main": {
+					"name": "serverless",
+					"image": "codefreshplugins/cf-plugin-serverless",
+					"environment": [
+						"PACKAGE=${{PACKAGE}}",
+						"AWS_CREDENTIALS_FILE=${{AWS_CREDENTIALS_FILE}}",
+						"AWS_SHARED_CREDENTIALS_FILE=${{AWS_SHARED_CREDENTIALS_FILE}}",
+						"AWS_REGION=${{AWS_REGION}}",
+						"AWS_PROFILE=${{AWS_PROFILE}}",
+						"AWS_STAGE=${{AWS_STAGE}}"
+					],
+					"commands": [
+						"serverless deploy --conceal --verbose --stage ${{AWS_STAGE}} --region ${{AWS_REGION}} --aws-profile ${{AWS_PROFILE}} --package ${{PACKAGE}}"
+					]
+				}
+			}
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "azure-key-vault",
+			"version": "0.0.2",
+			"isPublic": true,
+			"description": "Fetch Secrets from Azure Key Vault",
+			"sources": [
+				"https://github.com/codefresh-io/steps/tree/master/incubating/azure-key-vault"
+			],
+			"stage": "incubating",
+			"maintainers": [
+				{
+					"name": "Dustin Van Buskirk",
+					"email": "dustinb@codefresh.io"
+				}
+			],
+			"categories": [
+				"secret management",
+				"azure"
+			],
+			"official": false,
+			"tags": [],
+			"icon": {
+				"type": "svg",
+				"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/incubating/azure-key-vault/icon.svg",
+				"background": "#f4f4f4"
+			},
+			"examples": [
+				{
+					"description": "example-1",
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"GetAzureSecret": {
+								"title": "Fetching Azure Secret from Key Vault",
+								"type": "azure-key-vault",
+								"arguments": {
+									"AZURE_CLIENT_ID": "${{AZURE_CLIENT_ID}}",
+									"AZURE_SECRET": "${{AZURE_SECRET}}",
+									"AZURE_TENANT": "${{AZURE_TENANT}}",
+									"AZURE_SECRET_ID": "${{AZURE_SECRET_ID}}",
+									"AZURE_SECRET_VERSION": "${{AZURE_SECRET_VERSION}}",
+									"AZURE_VAULT_URL": "${{AZURE_VAULT_URL}}"
+								}
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-10-16T15:39:26.701Z",
+			"updated_at": "2019-10-16T15:39:26.701Z",
+			"latest": true,
+			"id": "5da739ae92fba668f304fde8"
+		},
+		"spec": {
+			"arguments": "{\n    \"definitions\": {},\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"patterns\": [],\n    \"required\": [],\n    \"properties\": {\n        \"AZURE_CLIENT_ID\": {\n            \"type\": \"string\",\n            \"description\": \"Application (client) ID for Service Principal\"\n        },\n        \"AZURE_SECRET\": {\n            \"type\": \"string\",\n            \"description\": \"Secret for Service Principal\"\n        },\n        \"AZURE_TENANT\": {\n            \"type\": \"string\",\n            \"description\": \"Directory (tenant) ID for Service Principal\"\n        },\n        \"AZURE_SECRET_ID\": {\n            \"type\": \"string\",\n            \"description\": \"Secret ID from Azure Key Vault\"\n        },\n        \"AZURE_SECRET_VERSION\": {\n            \"type\": \"string\",\n            \"description\": \"Secret Version from Azure Key Vault\"\n        },\n        \"AZURE_VAULT_URL\": {\n            \"type\": \"string\",\n            \"description\": \"URL for Azure Key Vault\"\n        }\n    }\n}",
+			"steps": {
+				"main": {
+					"name": "azure-key-vault",
+					"image": "codefreshplugins/cfstep-azure-key-vault",
+					"environment": [
+						"AZURE_CLIENT_ID=${{AZURE_CLIENT_ID}}",
+						"AZURE_SECRET=${{AZURE_SECRET}}",
+						"AZURE_TENANT=${{AZURE_TENANT}}",
+						"AZURE_SECRET_ID=${{AZURE_SECRET_ID}}",
+						"AZURE_SECRET_VERSION=${{AZURE_SECRET_VERSION}}",
+						"AZURE_VAULT_URL=${{AZURE_VAULT_URL}}"
+					]
+				}
+			}
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "azure-build",
+			"isPublic": true,
+			"description": "Docker build in Azure ACR",
+			"sources": [
+				"https://github.com/codefresh-io/steps/tree/master/incubating/azure-build"
+			],
+			"stage": "incubating",
+			"maintainers": [
+				{
+					"name": "Amir Gabay",
+					"email": "amir.gabay@codefresh.io"
+				}
+			],
+			"categories": [
+				"build"
+			],
+			"official": false,
+			"tags": [],
+			"icon": {
+				"type": "svg",
+				"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/incubating/azure-build/icon.svg",
+				"background": "#f4f4f4"
+			},
+			"examples": [
+				{
+					"description": "example-1",
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"cf-az-build": {
+								"type": "azure-build",
+								"arguments": {
+									"AUTH": "service-principal",
+									"IMAGE": "${{IMAGE_NAME}}",
+									"TAG": "${{IMAGE_TAG}}",
+									"ACR_NAME": "${{REGISTRY}}",
+									"APP_ID": "${{AZURE_APP_ID}}",
+									"PASSWORD": "${{AZURE_PASSWORD}}",
+									"TENANT": "${{TENANT}}",
+									"DOCKERFILE_PATH": "${{DOCKERFILE}}",
+									"USER": "${{USER}}"
+								}
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-07-03T05:57:01.269Z",
+			"updated_at": "2019-09-18T08:15:29.504Z",
+			"latest": true,
+			"version": "0.0.1",
+			"id": "5d1c43ada7e22ef2cf7ea739"
+		},
+		"spec": {
+			"arguments": "{\n    \"definitions\": {},\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"patterns\": [],\n    \"required\": [\n        \"USER\",\n        \"IMAGE\",\n        \"TAG\",\n        \"ACR_NAME\",\n        \"APP_ID\",\n        \"PASSWORD\",\n        \"TENANT\"\n    ],\n    \"properties\": {\n        \"AUTH\": {\n            \"type\": \"string\",\n            \"description\": \"Only if authentication mode is by service principal\"\n        },\n        \"USER\": {\n            \"type\": \"string\",\n            \"description\": \"azure user name (not need in service principal authentication mode)\"\n        },\n        \"IMAGE\": {\n            \"type\": \"string\",\n            \"description\": \"image name\"\n        },\n        \"TAG\": {\n            \"type\": \"string\",\n            \"description\": \"tag name\"\n        },\n        \"ACR_NAME\": {\n            \"type\": \"string\",\n            \"description\": \"acr registry name\"\n        },\n        \"APP_ID\": {\n            \"type\": \"string\",\n            \"description\": \"azure service principal application id (service principal authentication mode only)\"\n        },\n        \"PASSWORD\": {\n            \"type\": \"string\",\n            \"description\": \"azure service principal password or user password (based on authentication mode)\"\n        },\n        \"TENANT\": {\n            \"type\": \"string\",\n            \"description\": \"azure ad tenant id (service principal authentication mode only)\"\n        },\n        \"DOCKERFILE_PATH\": {\n            \"type\": \"string\",\n            \"description\": \"dockerfile path (default - working_dir/Dockerfile)\"\n        }\n    }\n}",
+			"steps": {
+				"main": {
+					"name": "azure-build",
+					"image": "codefreshplugins/cf-azure-builder",
+					"environment": [
+						"AUTH=${{AUTH}}",
+						"USER=${{USER}}",
+						"IMAGE=${{IMAGE}}",
+						"TAG=${{TAG}}",
+						"ACR_NAME=${{ACR_NAME}}",
+						"APP_ID=${{APP_ID}}",
+						"PASSWORD=${{PASSWORD}}",
+						"TENANT=${{TENANT}}",
+						"DOCKERFILE_PATH=${{DOCKERFILE_PATH}}"
+					]
+				}
+			}
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "run-jenkins-jobs",
+			"isPublic": true,
+			"description": "Run jenkins job from codefresh pipeline",
+			"sources": [
+				"https://github.com/codefresh-io/steps/tree/master/incubating/run-jenkins-jobs"
+			],
+			"stage": "incubating",
+			"maintainers": [
+				{
+					"name": "Vadim Waisman"
+				}
+			],
+			"categories": [
+				"build"
+			],
+			"official": false,
+			"tags": [],
+			"icon": {
+				"type": "image",
+				"size": {
+					"large": {
+						"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/incubating/run-jenkins-jobs/icon.jpg"
+					}
+				}
+			},
+			"examples": [
+				{
+					"description": "example-1",
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"RunJenkins": {
+								"title": "Triggering Jenkins Job",
+								"type": "run-jenkins-jobs",
+								"arguments": {
+									"JENKINS_URL": "${{JENKINS_URL}}",
+									"JENKINS_TOKEN": "${{JENKINS_TOKEN}}",
+									"JENKINS_JOB": "${{JENKINS_JOB}}",
+									"JENKINS_USERNAME": "${{JENKINS_USERNAME}}"
+								}
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-07-03T14:57:01.935Z",
+			"updated_at": "2019-09-18T08:15:28.427Z",
+			"latest": true,
+			"version": "0.0.1",
+			"id": "5d1cc23ea7e22ee3bb7ea75b"
+		},
+		"spec": {
+			"arguments": "{\n    \"definitions\": {},\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"patterns\": [],\n    \"required\": [\n      \"JENKINS_USERNAME\",\n      \"JENKINS_TOKEN\",\n      \"JENKINS_URL\",\n      \"JENKINS_JOB\"\n    ],\n    \"properties\": {\n        \"JENKINS_USERNAME\": {\n            \"type\": \"string\",\n            \"description\": \"jenkins username (required)\"\n        },\n        \"JENKINS_TOKEN\": {\n            \"type\": \"string\",\n            \"description\": \"jenkins token (required)\"\n        },\n        \"JENKINS_URL\": {\n            \"type\": \"string\",\n            \"description\": \"jenkins machine url (required)\"\n        },\n        \"JENKINS_JOB\": {\n            \"type\": \"string\",\n            \"description\": \"list of jenkins jobs to run separated by spaces (required)\"\n        }\n    }\n}",
+			"steps": {
+				"main": {
+					"name": "run-jenkins-jobs",
+					"image": "codefreshplugins/run-jenkins-jobs",
+					"environment": [
+						"JENKINS_USERNAME=${{JENKINS_USERNAME}}",
+						"JENKINS_TOKEN=${{JENKINS_TOKEN}}",
+						"JENKINS_URL=${{JENKINS_URL}}",
+						"JENKINS_JOB=${{JENKINS_JOB}}"
+					]
+				}
+			}
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "tomlesh/run-jenkins-jobs",
+			"version": "0.0.1",
+			"isPublic": true,
+			"description": "Run jenkins job from codefresh pipeline",
+			"sources": [
+				"https://github.com/codefresh-io/steps/tree/master/incubating/run-jenkins-jobs"
+			],
+			"stage": "incubating",
+			"maintainers": [
+				{
+					"name": "Vadim Waisman"
+				}
+			],
+			"categories": [
+				"build"
+			],
+			"official": false,
+			"tags": [],
+			"icon": {
+				"type": "image",
+				"size": {
+					"large": {
+						"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/incubating/run-jenkins-jobs/icon.jpg"
+					}
+				}
+			},
+			"examples": [
+				{
+					"description": "example-1",
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"RunJenkins": {
+								"title": "Triggering Jenkins Job",
+								"type": "run-jenkins-jobs",
+								"arguments": {
+									"JENKINS_URL": "${{JENKINS_URL}}",
+									"JENKINS_TOKEN": "${{JENKINS_TOKEN}}",
+									"JENKINS_JOB": "${{JENKINS_JOB}}",
+									"JENKINS_USERNAME": "${{JENKINS_USERNAME}}"
+								}
+							}
+						}
+					}
+				}
+			],
+			"accountId": "5ced4262acc329034b0bb8a2",
+			"created_at": "2019-10-21T16:19:33.753Z",
+			"updated_at": "2019-10-21T16:19:33.753Z",
+			"latest": true,
+			"id": "5dadda955d3fa78622f8996f"
+		},
+		"spec": {
+			"arguments": "{\n    \"definitions\": {},\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"patterns\": [],\n    \"required\": [\n      \"JENKINS_USERNAME\",\n      \"JENKINS_TOKEN\",\n      \"JENKINS_URL\",\n      \"JENKINS_JOB\"\n    ],\n    \"properties\": {\n        \"JENKINS_USERNAME\": {\n            \"type\": \"string\",\n            \"description\": \"jenkins username (required)\"\n        },\n        \"JENKINS_TOKEN\": {\n            \"type\": \"string\",\n            \"description\": \"jenkins token (required)\"\n        },\n        \"JENKINS_URL\": {\n            \"type\": \"string\",\n            \"description\": \"jenkins machine url (required)\"\n        },\n        \"JENKINS_JOB\": {\n            \"type\": \"string\",\n            \"description\": \"list of jenkins jobs to run separated by spaces (required)\"\n        }\n    }\n}",
+			"steps": {
+				"main": {
+					"name": "run-jenkins-jobs",
+					"image": "tomlesh/jenkins",
+					"environment": [
+						"JENKINS_USER=${{JENKINS_USERNAME}}",
+						"JENKINS_TOKEN=${{JENKINS_TOKEN}}",
+						"JENKINS_URL=${{JENKINS_URL}}",
+						"JENKINS_JOB=${{JENKINS_JOB}}"
+					]
+				}
+			}
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "github-pr",
+			"version": "0.0.2",
+			"isPublic": true,
+			"description": "Operates on GitHub pull requests",
+			"sources": [
+				"https://github.com/codefresh-io/steps/tree/master/incubating/github-pr"
+			],
+			"stage": "incubating",
+			"maintainers": [
+				{
+					"name": "Nick Sakovich",
+					"email": "nick.sakovich@codefresh.io"
+				},
+				{
+					"name": "Yaroslav Drachenko",
+					"email": "yaroslav@codefresh.io"
+				}
+			],
+			"categories": [
+				"git",
+				"code-review"
+			],
+			"official": false,
+			"tags": [],
+			"icon": {
+				"type": "svg",
+				"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/incubating/github-pr/icon.svg",
+				"background": "#f4f4f4"
+			},
+			"examples": [
+				{
+					"description": "example-1",
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"github-pr": {
+								"type": "github-pr",
+								"arguments": {
+									"GITHUB_TOKEN": "${{GITHUB_TOKEN}}",
+									"GITHUB_REPO_OWNER": "${{GITHUB_REPO_OWNER}}",
+									"GITHUB_REPO_NAME": "${{GITHUB_REPO_NAME}}",
+									"HEAD": "${{CF_BRANCH}}",
+									"TITLE": "Codefresh PR for ${{CF_BRANCH}}",
+									"BASE": "master"
+								}
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-10-21T09:15:49.157Z",
+			"updated_at": "2019-10-21T09:15:49.157Z",
+			"latest": true,
+			"id": "5dad7745b66aa8a8ec215403"
+		},
+		"spec": {
+			"arguments": "{\n    \"definitions\": {},\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"patterns\": [],\n    \"required\": [\n        \"GITHUB_TOKEN\",\n        \"GITHUB_REPO_OWNER\",\n        \"GITHUB_REPO_NAME\"\n    ],\n    \"properties\": {\n        \"GITHUB_TOKEN\": {\n            \"type\": \"string\",\n            \"description\": \"Token for access to GitHub\"\n        },\n        \"GITHUB_REPO_OWNER\": {\n            \"type\": \"string\",\n            \"description\": \"Name of repo owner\"\n        },\n        \"GITHUB_REPO_NAME\": {\n            \"type\": \"string\",\n            \"description\": \"Name of repo\"\n        },\n        \"GITHUB_PR_NUMBER\": {\n            \"type\": \"number\",\n            \"description\": \"The number of updated pull request. Required for open/close/update operations\"\n        },\n        \"GITHUB_PR_OPERATION\": {\n            \"type\": \"string\",\n            \"description\": \"Operation on pull request. Options - create, update, open, close. Default - create.\",\n            \"default\": \"create\"\n        },\n        \"HEAD\": {\n            \"type\": \"string\",\n            \"description\": \"The name of the branch where your changes are implemented. For cross-repository pull requests in the same network, namespace head with a user like this - username:branch. Required for 'create' operation.\"\n        },\n        \"BASE\": {\n            \"type\": \"string\",\n            \"description\": \"The name of the branch you want the changes pulled into. This should be an existing branch on the current repository. You cannot submit a pull request to one repository that requests a merge to a base of another repository. Required for 'create' operation.\"\n        },\n        \"TITLE\": {\n            \"type\": \"string\",\n            \"description\": \"The title of the pull request. Required for 'create' operation.\"\n        }\n    }\n}",
+			"steps": {
+				"main": {
+					"name": "github-pr",
+					"image": "codefresh/github-pr-plugin",
+					"environment": [
+						"GITHUB_TOKEN=${{GITHUB_TOKEN}}",
+						"GITHUB_REPO_OWNER=${{GITHUB_REPO_OWNER}}",
+						"GITHUB_REPO_NAME=${{GITHUB_REPO_NAME}}",
+						"GITHUB_PR_NUMBER=${{GITHUB_PR_NUMBER}}",
+						"GITHUB_PR_OPERATION=${{GITHUB_PR_OPERATION}}",
+						"HEAD=${{HEAD}}",
+						"BASE=${{BASE}}",
+						"TITLE=${{TITLE}}"
+					]
+				}
+			}
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"version": "0.0.1",
+			"name": "yaroslav-codefresh/github-pr",
+			"isPublic": true,
+			"description": "Operates on GitHub pull requests",
+			"sources": [
+				"https://github.com/codefresh-io/steps/tree/master/incubating/github-pr"
+			],
+			"stage": "incubating",
+			"maintainers": [
+				{
+					"name": "Nick Sakovich",
+					"email": "nick.sakovich@codefresh.io"
+				},
+				{
+					"name": "Yaroslav Drachenko",
+					"email": "yaroslav@codefresh.io"
+				}
+			],
+			"categories": [
+				"git",
+				"code-review"
+			],
+			"official": false,
+			"tags": [],
+			"icon": {
+				"type": "svg",
+				"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/incubating/github-pr/icon.svg",
+				"background": "#f4f4f4"
+			},
+			"examples": [
+				{
+					"description": "example-1",
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"github-pr": {
+								"type": "github-pr",
+								"arguments": {
+									"GITHUB_REPO_OWNER": "${{GITHUB_REPO_OWNER}}",
+									"GITHUB_REPO_NAME": "${{GITHUB_REPO_NAME}}",
+									"HEAD": "${{CF_BRANCH}}",
+									"TITLE": "Codefresh PR for ${{CF_BRANCH}}",
+									"BASE": "master"
+								}
+							}
+						}
+					}
+				}
+			],
+			"accountId": "5bf3ca2c702fed0008ee9a44",
+			"created_at": "2019-10-21T08:45:50.900Z",
+			"updated_at": "2019-10-21T08:50:54.913Z",
+			"latest": true,
+			"id": "5dad703e908e2567bb71cf73"
+		},
+		"spec": {
+			"arguments": "{\n    \"definitions\": {},\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"patterns\": [],\n    \"required\": [\n        \"GITHUB_TOKEN\",\n        \"GITHUB_REPO_OWNER\",\n        \"GITHUB_REPO_NAME\"\n    ],\n    \"properties\": {\n        \"GITHUB_TOKEN\": {\n            \"type\": \"string\",\n            \"description\": \"Token for access to GitHub\"\n        },\n        \"GITHUB_REPO_OWNER\": {\n            \"type\": \"string\",\n            \"description\": \"Name of repo owner\"\n        },\n        \"GITHUB_REPO_NAME\": {\n            \"type\": \"string\",\n            \"description\": \"Name of repo\"\n        },\n        \"GITHUB_PR_NUMBER\": {\n            \"type\": \"number\",\n            \"description\": \"The number of updated pull request. Required for open/close/update operations\"\n        },\n        \"GITHUB_PR_OPERATION\": {\n            \"type\": \"string\",\n            \"description\": \"Operation on pull request. Options - create, update, open, close. Default - create.\",\n            \"default\": \"create\"\n        },\n        \"HEAD\": {\n            \"type\": \"string\",\n            \"description\": \"The name of the branch where your changes are implemented. For cross-repository pull requests in the same network, namespace head with a user like this - username:branch. Required for 'create' operation.\"\n        },\n        \"BASE\": {\n            \"type\": \"string\",\n            \"description\": \"The name of the branch you want the changes pulled into. This should be an existing branch on the current repository. You cannot submit a pull request to one repository that requests a merge to a base of another repository. Required for 'create' operation.\"\n        },\n        \"TITLE\": {\n            \"type\": \"string\",\n            \"description\": \"The title of the pull request. Required for 'create' operation.\"\n        }\n    }\n}",
+			"steps": {
+				"main": {
+					"name": "github-pr",
+					"image": "codefresh/github-pr-plugin",
+					"environment": [
+						"GITHUB_TOKEN=${{GITHUB_TOKEN}}",
+						"GITHUB_REPO_OWNER=${{GITHUB_REPO_OWNER}}",
+						"GITHUB_REPO_NAME=${{GITHUB_REPO_NAME}}",
+						"GITHUB_PR_NUMBER=${{GITHUB_PR_NUMBER}}",
+						"GITHUB_PR_OPERATION=${{GITHUB_PR_OPERATION}}",
+						"HEAD=${{HEAD}}",
+						"BASE=${{BASE}}",
+						"TITLE=${{TITLE}}"
+					]
+				}
+			}
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "benmathews/helmfile",
+			"version": "0.0.1",
+			"isPublic": true,
+			"description": "Use helmfile from Codefresh pipeline",
+			"sources": [
+				"https://github.com/codefresh-contrib/cfstep-helmfile"
+			],
+			"stage": "incubating",
+			"maintainers": [
+				{
+					"name": "Dustin Van Buskirk",
+					"email": "dustinvb@codefresh.io"
+				}
+			],
+			"categories": [
+				"featured",
+				"deployment"
+			],
+			"official": false,
+			"tags": [],
+			"icon": {
+				"type": "image",
+				"size": {
+					"large": {
+						"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/incubating/helm/icon.jpg"
+					}
+				}
+			},
+			"examples": [
+				{
+					"description": "example-1",
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"deploy": {
+								"type": "helmfile",
+								"arguments": {
+									"CHART_REF": "${{CHART_REF}}",
+									"RELEASE_NAME": "${{RELEASE_NAME}}",
+									"KUBE_CONTEXT": "${{KUBE_CONTEXT}}"
+								}
+							}
+						}
+					}
+				}
+			],
+			"accountId": "5d57214e21511ae6a66a010b",
+			"created_at": "2019-11-06T19:01:25.001Z",
+			"updated_at": "2019-11-06T19:01:25.001Z",
+			"latest": true,
+			"id": "5dc31885ceef849ade584f60"
+		},
+		"spec": {
+			"arguments": "{\n    \"definitions\": {},\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"patterns\": [],\n    \"required\": [],\n    \"properties\": {\n        \"KUBE_CONTEXT\": {\n            \"type\": \"string\",\n            \"description\": \"Kubernetes context to use (the name of the cluster as configured in Codefresh) (required)\"\n        },\n        \"CHART_NAME\": {\n            \"type\": \"string\",\n            \"description\": \"Helm chart name to release (path to chart folder, or name of packaged chart) (required)\"\n        },\n        \"RELEASE_NAME\": {\n            \"type\": \"string\",\n            \"description\": \"Helm release name\"\n        },\n        \"NAMESPACE\": {\n            \"type\": \"string\",\n            \"description\": \"target Kubernetes namespace\"\n        },\n        \"TILLER_NAMESPACE\": {\n            \"type\": \"string\",\n            \"description\": \"Kubernetes namespace where tiller is at\"\n        },\n        \"CHART_VERSION\": {\n            \"type\": \"string\",\n            \"description\": \"application chart version to install\"\n        },\n        \"CHART_REPO_URL\": {\n            \"type\": \"string\",\n            \"description\": \"Helm chart repository URL (overriden by injected Helm repository context)\"\n        },\n        \"CUSTOMFILE_<name>\": {\n            \"type\": \"string\",\n            \"description\": \"Values file to provide to Helm (as --file). see usage information below.\"\n        },\n        \"CUSTOM_<name>\": {\n            \"type\": \"string\",\n            \"description\": \"Value to provide to Helm (as --set). see usage information below.\"\n        }\n    }\n}",
+			"steps": {
+				"main": {
+					"name": "helmfile",
+					"image": "codefreshplugins/helmfile:${{HELMFILE_VERSION",
+					"environment": [
+						"KUBE_CONTEXT=${{KUBE_CONTEXT}}",
+						"CHART_NAME=${{CHART_NAME}}",
+						"RELEASE_NAME=${{RELEASE_NAME}}",
+						"NAMESPACE=${{NAMESPACE}}",
+						"TILLER_NAMESPACE=${{TILLER_NAMESPACE}}",
+						"CHART_VERSION=${{CHART_VERSION}}",
+						"CHART_REPO_URL=${{CHART_REPO_URL}}",
+						"CUSTOMFILE_<name>=${{CUSTOMFILE_<name>}}",
+						"CUSTOM_<name>=${{CUSTOM_<name>}}"
+					]
+				}
+			}
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "dustinvanbuskirk/helmfile",
+			"version": "0.0.1",
+			"isPublic": true,
+			"description": "Use helmfile from Codefresh pipeline",
+			"sources": [
+				"https://github.com/codefresh-contrib/cfstep-helmfile"
+			],
+			"stage": "incubating",
+			"maintainers": [
+				{
+					"name": "Dustin Van Buskirk",
+					"email": "dustinvb@codefresh.io"
+				}
+			],
+			"categories": [
+				"deployment"
+			],
+			"official": false,
+			"tags": [],
+			"icon": {
+				"type": "svg",
+				"url": "https://helm.sh/img/helm-logo.svg",
+				"background": "#f4f4f4"
+			},
+			"examples": [
+				{
+					"description": "example-1",
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"deploy": {
+								"type": "helmfile",
+								"arguments": {
+									"WORKING_DIRECTORY": "/codefresh/volume/${{CF_REPO_NAME}}",
+									"COMMANDS": "diff",
+									"ENVIRONMENT": "development",
+									"KUBE_CONTEXT": "dev_cluster"
+								}
+							}
+						}
+					}
+				}
+			],
+			"accountId": "57fbc914b15f830100848f92",
+			"created_at": "2019-11-07T01:08:01.161Z",
+			"updated_at": "2019-11-25T04:33:23.329Z",
+			"latest": true,
+			"id": "5dc36e71ceef845c98584ff4"
+		},
+		"spec": {
+			"arguments": "{\n    \"definitions\": {},\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"patterns\": [],\n    \"required\": [\n      \"COMMANDS\"\n    ],\n    \"properties\": {\n        \"COMMANDS\": {\n            \"type\": \"string\",\n            \"description\": \"helmfle commands, executed in order provided\",\n            \"examples\": [\"diff\",\"diff,apply\"],\n            \"default\": \"version\"\n        },\n        \"WORKING_DIRECTORY\": {\n            \"type\": \"string\",\n            \"description\": \"\",\n            \"examples\": [\"/codefresh/volume/${{CF_REPO_NAME}}\"],\n            \"default\": \"/codefresh/volume\"\n        },\n        \"HELMFILE_VERSION\": {\n            \"type\": \"string\",\n            \"description\": \"Version of helmfile binary\",\n            \"default\": \"0.90.7\",\n            \"enum\": [ \"0.90.2\", \"0.90.7\" ]\n        },           \n        \"HELM_BINARY\": {\n            \"type\": \"string\",\n            \"description\": \"path to helm binary\",\n            \"default\": \"\"\n        },\n        \"FILE\": {\n            \"type\": \"string\",\n            \"description\": \"load config from file or directory. defaults to helmfile.yaml or `helmfile.d`(means `helmfile.d/*.yaml`) in this preference\",\n            \"default\": \"\"\n        },\n        \"ENVIRONMENT\": {\n            \"type\": \"string\",\n            \"description\": \"specify the environment name. defaults to default\",\n            \"default\": \"\"\n        },\n        \"STATE_VALUES_SET\": {\n            \"type\": \"string\",\n            \"description\": \"set state values on the command line (can specify multiple or separate values with commas: key1=val1,key2=val2)\",\n            \"default\": \"\"\n        },\n        \"STATE_VALUES_FILE\": {\n            \"type\": \"string\",\n            \"description\": \"specify state values in a YAML file\",\n            \"default\": \"\"\n        },\n        \"QUIET\": {\n            \"type\": \"boolean\",\n            \"description\": \"Silence output. Equivalent to log-level warn\",\n            \"default\": false\n        },\n        \"KUBE_CONTEXT\": {\n            \"type\": \"string\",\n            \"description\": \"Set kubectl context. Uses current context by default\",\n            \"default\": \"\"\n        },\n        \"NO_COLOR\": {\n            \"type\": \"boolean\",\n            \"description\": \"Output without color\",\n            \"default\": false\n        },\n        \"LOG_LEVEL\": {\n            \"type\": \"string\",\n            \"description\": \"Set log level, default info\",\n            \"default\": \"\"\n        },\n        \"NAMESPACE\": {\n            \"type\": \"string\",\n            \"description\": \"Set namespace. Uses the namespace set in the context by default, and is available in templates as {{ .Namespace }}\",\n            \"default\": \"\"\n        },\n        \"SELECTOR\": {\n            \"type\": \"string\",\n            \"description\": \"Only run using the releases that match labels. Labels can take the form of foo=bar or foo!=bar.  A release must match all labels in a group in order to be used. Multiple groups can be specified at once.  --selector tier=frontend,tier!=proxy --selector tier=backend. Will match all frontend, non-proxy releases AND all backend releases. The name of a release can be used as a label. --selector name=myrelease\",\n            \"default\": \"\"\n        },\n        \"ALLOW_NO_MATCHING_RELEASE\": {\n            \"type\": \"boolean\",\n            \"description\": \"Do not exit with an error code if the provided selector has no matching releases.\",\n            \"default\": false\n        },\n        \"INTERACTIVE\": {\n            \"type\": \"boolean\",\n            \"description\": \"Request confirmation before attempting to modify clusters\",\n            \"default\": false\n        },\n        \"HELP\": {\n            \"type\": \"boolean\",\n            \"description\": \"show help\",\n            \"default\": false\n        },\n        \"VERSION\": {\n            \"type\": \"boolean\",\n            \"description\": \"print the version\",\n            \"default\": false\n        },\n        \"DEPS_PS\": {\n            \"type\": \"string\",\n            \"description\": \"String of command options and arguments for, helmfile deps - update charts based on the contents of requirements.yaml\",\n            \"default\": \"\"\n        },\n        \"REPOS_PS\": {\n            \"type\": \"string\",\n            \"description\": \"String of command options and arguments for, helmfile repos - sync repositories from state file (helm repo add && helm repo update)\",\n            \"default\": \"\"\n        },\n        \"CHARTS_PS\": {\n            \"type\": \"string\",\n            \"description\": \"String of command options and arguments for, helmfile charts - DEPRECATED: sync releases from state file (helm upgrade --install)\",\n            \"default\": \"\"\n        },\n        \"DIFF_PS\": {\n            \"type\": \"string\",\n            \"description\": \"String of command options and arguments for, helmfile diff - diff releases from state file against env (helm diff)\",\n            \"default\": \"\"\n        },\n        \"TEMPLATE_PS\": {\n            \"type\": \"string\",\n            \"description\": \"String of command options and arguments for, helmfile template - template releases from state file against env (helm template)\",\n            \"default\": \"\"\n        },\n        \"LINT_PS\": {\n            \"type\": \"string\",\n            \"description\": \"String of command options and arguments for, helmfile lint - lint charts from state file (helm lint)\",\n            \"default\": \"\"\n        },\n        \"SYNC_PS\": {\n            \"type\": \"string\",\n            \"description\": \"String of command options and arguments for, helmfile sync - sync all resources from state file (repos, releases and chart deps)\",\n            \"default\": \"\"\n        },\n        \"APPLY_PS\": {\n            \"type\": \"string\",\n            \"description\": \"String of command options and arguments for, helmfile apply - apply all resources from state file only when there are changes\",\n            \"default\": \"\"\n        },\n        \"STATUS_PS\": {\n            \"type\": \"string\",\n            \"description\": \"String of command options and arguments for, helmfile status - retrieve status of releases in state file\",\n            \"default\": \"\"\n        },\n        \"DELETE_PS\": {\n            \"type\": \"string\",\n            \"description\": \"String of command options and arguments for, helmfile delete - DEPRECATED: delete releases from state file (helm delete)\",\n            \"default\": \"\"\n        },\n        \"DESTROY_PS\": {\n            \"type\": \"string\",\n            \"description\": \"String of command options and arguments for, helmfile destroy - deletes and then purges releases\",\n            \"default\": \"\"\n        },\n        \"TEST_PS\": {\n            \"type\": \"string\",\n            \"description\": \"String of command options and arguments for, helmfile test - test releases from state file (helm test)\",\n            \"default\": \"\"\n        }\n    }\n}",
+			"steps": {
+				"main": {
+					"name": "helmfile",
+					"image": "dustinvanbuskirk/cfstep-helmfile:${{HELMFILE_VERSION}}",
+					"environment": [
+						"COMMANDS=${{COMMANDS}}",
+						"WORKING_DIRECTORY=${{WORKING_DIRECTORY}}",
+						"HELMFILE_VERSION=${{HELMFILE_VERSION}}",
+						"HELM_BINARY=${{HELM_BINARY}}",
+						"FILE=${{FILE}}",
+						"ENVIRONMENT=${{ENVIRONMENT}}",
+						"STATE_VALUES_SET=${{STATE_VALUES_SET}}",
+						"STATE_VALUES_FILE=${{STATE_VALUES_FILE}}",
+						"QUIET=${{QUIET}}",
+						"KUBE_CONTEXT=${{KUBE_CONTEXT}}",
+						"NO_COLOR=${{NO_COLOR}}",
+						"LOG_LEVEL=${{LOG_LEVEL}}",
+						"NAMESPACE=${{NAMESPACE}}",
+						"SELECTOR=${{SELECTOR}}",
+						"ALLOW_NO_MATCHING_RELEASE=${{ALLOW_NO_MATCHING_RELEASE}}",
+						"INTERACTIVE=${{INTERACTIVE}}",
+						"HELP=${{HELP}}",
+						"VERSION=${{VERSION}}",
+						"DEPS_PS=${{DEPS_PS}}",
+						"REPOS_PS=${{REPOS_PS}}",
+						"CHARTS_PS=${{CHARTS_PS}}",
+						"DIFF_PS=${{DIFF_PS}}",
+						"TEMPLATE_PS=${{TEMPLATE_PS}}",
+						"LINT_PS=${{LINT_PS}}",
+						"SYNC_PS=${{SYNC_PS}}",
+						"APPLY_PS=${{APPLY_PS}}",
+						"STATUS_PS=${{STATUS_PS}}",
+						"DELETE_PS=${{DELETE_PS}}",
+						"DESTROY_PS=${{DESTROY_PS}}",
+						"TEST_PS=${{TEST_PS}}"
+					]
+				}
+			}
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "ecs-deploy",
+			"isPublic": true,
+			"description": "Release a Helm chart (update or install)",
+			"sources": [
+				"https://github.com/codefresh-io/steps/tree/master/incubating/ecs-deploy"
+			],
+			"stage": "incubating",
+			"maintainers": [
+				{
+					"name": "Oleg  Verhovsky",
+					"email": "oleg@codefresh.io"
+				}
+			],
+			"categories": [
+				"deployment"
+			],
+			"official": false,
+			"tags": [],
+			"icon": {
+				"type": "image",
+				"size": {
+					"large": {
+						"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/incubating/ecs-deploy/icon.jpg"
+					}
+				}
+			},
+			"examples": [
+				{
+					"description": "example-1",
+					"workflow": {
+						"deploy to ecs": {
+							"type": "ecs-deploy",
+							"arguments": {
+								"AWS_ACCESS_KEY_ID": "${{AWS_ACCESS_KEY_ID}}",
+								"AWS_SECRET_ACCESS_KEY": "${{AWS_SECRET_ACCESS_KEY}}"
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-06-25T06:01:06.499Z",
+			"updated_at": "2019-09-18T08:15:28.251Z",
+			"latest": true,
+			"version": "0.0.1",
+			"id": "5d11b8a299f5e041ca788333"
+		},
+		"spec": {
+			"arguments": "{\n    \"definitions\": {},\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"patterns\": [],\n    \"required\": [\n        \"AWS_ACCESS_KEY_ID\",\n        \"AWS_SECRET_ACCESS_KEY\",\n        \"aws-region\",\n        \"region\",\n        \"cluster_name\",\n        \"service_name\"\n    ],\n    \"properties\": {\n        \"AWS_ACCESS_KEY_ID\": {\n            \"type\": \"string\",\n            \"description\": \"Amazon access key ID\"\n        },\n        \"AWS_SECRET_ACCESS_KEY\": {\n            \"type\": \"string\",\n            \"description\": \"amazon secret key (make sure it's encrypted)\"\n        },\n        \"aws-region\": {\n            \"type\": \"string\",\n            \"description\": \"Helm release name\"\n        },\n        \"region\": {\n            \"type\": \"string\",\n            \"description\": \"aws region\"\n        },\n        \"cluster_name\": {\n            \"type\": \"string\",\n            \"description\": \"ecs cluster name\"\n        },\n        \"service_name\": {\n            \"type\": \"string\",\n            \"description\": \"ecs service name\"\n        }\n    }\n}",
+			"steps": {
+				"main": {
+					"name": "ecs-deploy",
+					"image": "codefreshplugins/cf-deploy-ecs",
+					"environment": [
+						"AWS_ACCESS_KEY_ID=${{AWS_ACCESS_KEY_ID}}",
+						"AWS_SECRET_ACCESS_KEY=${{AWS_SECRET_ACCESS_KEY}}",
+						"aws-region=${{aws-region}}",
+						"region=${{region}}",
+						"cluster_name=${{cluster_name}}",
+						"service_name=${{service_name}}"
+					]
+				}
+			}
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "k8s-blue-green-deployment",
+			"isPublic": true,
+			"description": "Perform blue/green deployments on a Kubernetes cluster",
+			"sources": [
+				"https://github.com/codefresh-io/steps/tree/master/incubating/k8s-blue-green-deployment"
+			],
+			"stage": "incubating",
+			"maintainers": [
+				{
+					"name": "Kostis Kapelonis"
+				}
+			],
+			"categories": [
+				"featured",
+				"deployment"
+			],
+			"official": false,
+			"tags": [],
+			"icon": {
+				"type": "image",
+				"size": {
+					"large": {
+						"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/incubating/k8s-blue-green-deployment/icon.jpg"
+					}
+				}
+			},
+			"examples": [
+				{
+					"description": "example-1",
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"run": {
+								"title": "Deploying new version ${{CF_SHORT_REVISION}}",
+								"type": "k8s-blue-green-deployment",
+								"arguments": {
+									"SERVICE_NAME": "${{SERVICE_NAME}}",
+									"DEPLOYMENT_NAME": "${{DEPLOYMENT_NAME}}",
+									"NEW_VERSION": "${{NEW_VERSION}}",
+									"HEALTH_SECONDS": "${{HEALTH_SECONDS}}",
+									"NAMESPACE": "${{NAMESPACE}}",
+									"KUBE_CONTEXT": "${{KUBE_CONTEXT}}"
+								}
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-06-25T06:01:06.440Z",
+			"updated_at": "2019-09-18T08:15:28.251Z",
+			"latest": true,
+			"version": "0.0.1",
+			"id": "5d11b8a2908ad54f1cf271e2"
+		},
+		"spec": {
+			"arguments": "{\n    \"definitions\": {},\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"patterns\": [],\n    \"required\": [\n      \"SERVICE_NAME\",\n      \"DEPLOYMENT_NAME\",\n      \"NEW_VERSION\",\n      \"HEALTH_SECONDS\",\n      \"NAMESPACE\",\n      \"KUBE_CONTEXT\"\n    ],\n    \"properties\": {\n        \"KUBE_CONTEXT\": {\n            \"type\": \"string\",\n            \"description\": \"The name of your cluster (as found in the Codefresh Kubernetes dashboard).\"\n        },\n        \"SERVICE_NAME\": {\n            \"type\": \"string\",\n            \"description\": \"Name of the service\"\n        },\n        \"DEPLOYMENT_NAME\": {\n            \"type\": \"string\",\n            \"description\": \"Name of the deployment\"\n        },\n        \"NEW_VERSION\": {\n            \"type\": \"string\",\n            \"description\": \"New version\"\n        },\n        \"NAMESPACE\": {\n            \"type\": \"string\",\n            \"description\": \"The namespace in the cluster\"\n        },\n        \"HEALTH_SECONDS\": {\n            \"type\": \"string\",\n            \"description\": \"Number of seconds the mesure health\"\n        }\n    }\n}",
+			"steps": {
+				"main": {
+					"name": "k8s-blue-green-deployment",
+					"image": "codefreshplugins/k8s-blue-green",
+					"environment": [
+						"KUBE_CONTEXT=${{KUBE_CONTEXT}}",
+						"SERVICE_NAME=${{SERVICE_NAME}}",
+						"DEPLOYMENT_NAME=${{DEPLOYMENT_NAME}}",
+						"NEW_VERSION=${{NEW_VERSION}}",
+						"HEALTH_SECONDS=${{HEALTH_SECONDS}}",
+						"NAMESPACE=${{NAMESPACE}}",
+						"KUBE_CONTEXT=${{KUBE_CONTEXT}}"
+					]
+				}
+			}
+		}
+	},
+	{
+		"version": "1.0",
+		"kind": "step-type",
+		"metadata": {
+			"name": "k8s-canary-deployment",
+			"isPublic": true,
+			"description": "Perform canary deployments on a Kubernetes cluster",
+			"sources": [
+				"https://github.com/codefresh-io/steps/tree/master/incubating/k8s-canary-deployment"
+			],
+			"stage": "incubating",
+			"maintainers": [
+				{
+					"name": "Kostis Kapelonis",
+					"email": "support@codefresh.io"
+				}
+			],
+			"categories": [
+				"featured",
+				"deployment"
+			],
+			"official": false,
+			"tags": [],
+			"icon": {
+				"type": "image",
+				"size": {
+					"large": {
+						"url": "https://cdn.jsdelivr.net/gh/codefresh-io/steps/incubating/k8s-canary-deployment/icon.jpg"
+					}
+				}
+			},
+			"examples": [
+				{
+					"description": "example-1",
+					"workflow": {
+						"version": "1.0",
+						"steps": {
+							"run": {
+								"title": "Deploying new version ${{CF_SHORT_REVISION}}",
+								"type": "k8s-canary-deployment",
+								"arguments": {
+									"WORKING_VOLUME": "${{WORKING_VOLUME}}",
+									"SERVICE_NAME": "${{SERVICE_NAME}}",
+									"DEPLOYMENT_NAME": "${{DEPLOYMENT_NAME}}",
+									"TRAFFIC_INCREMENT": "${{TRAFFIC_INCREMENT}}",
+									"NEW_VERSION": "${{NEW_VERSION}}",
+									"SLEEP_SECONDS": "${{SLEEP_SECONDS}}",
+									"NAMESPACE": "${{NAMESPACE}}",
+									"KUBE_CONTEXT": "${{KUBE_CONTEXT}}"
+								}
+							}
+						}
+					}
+				}
+			],
+			"created_at": "2019-06-25T06:01:06.564Z",
+			"updated_at": "2019-09-18T08:15:28.251Z",
+			"latest": true,
+			"version": "0.0.1",
+			"id": "5d11b8a3908ad5b89df271f4"
+		},
+		"spec": {
+			"arguments": "{\n    \"definitions\": {},\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"patterns\": [],\n    \"required\": [],\n    \"properties\": {\n        \"KUBE_CONTEXT\": {\n            \"type\": \"string\",\n            \"description\": \"The name of your cluster (as found in the Codefresh Kubernetes dashboard).\"\n        },\n        \"NAMESPACE\": {\n            \"type\": \"string\",\n            \"description\": \"The name of the kubenretes namespace\"\n        },\n        \"TRAFFIC_INCREMENT\": {\n            \"type\": \"string\"\n        },\n        \"WORKING_VOLUME\": {\n          \"type\": \"string\",\n          \"description\": \"Path to directory\",\n          \"default\": \".\"\n        },\n        \"SERVICE_NAME\": {\n          \"type\": \"string\",\n          \"description\": \"Kubernetes service name\"\n        },\n        \"DEPLOYMENT_NAME\": {\n          \"type\": \"string\",\n          \"description\": \"Kubernetes deployment name\"\n        },\n        \"SLEEP_SECONDS\": {\n          \"type\": \"string\",\n          \"description\": \"Time to sleep\"\n        },\n        \"NEW_VERSION\": {\n          \"type\": \"string\"\n        }\n    }\n}",
+			"steps": {
+				"main": {
+					"name": "k8s-canary-deployment",
+					"image": "codefreshplugins/k8s-canary",
+					"environment": [
+						"WORKING_VOLUME=${{WORKING_VOLUME}}",
+						"SERVICE_NAME=${{SERVICE_NAME}}",
+						"DEPLOYMENT_NAME=${{DEPLOYMENT_NAME}}",
+						"TRAFFIC_INCREMENT=${{TRAFFIC_INCREMENT}}",
+						"NEW_VERSION=${{NEW_VERSION}}",
+						"SLEEP_SECONDS=${{SLEEP_SECONDS}}",
+						"NAMESPACE=${{NAMESPACE}}",
+						"KUBE_CONTEXT=${{KUBE_CONTEXT}}"
+					]
+				}
+			}
+		}
+	}
+]
