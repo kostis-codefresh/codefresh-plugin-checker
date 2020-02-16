@@ -170,6 +170,7 @@ func storeImageInfo(fullDockerImage string, p *ParsingContext) {
 }
 
 func storeVersionInfo(pluginVersion string, p *ParsingContext) {
+	createStepIfNeeded(p)
 	p.currentStep.Version = pluginVersion
 }
 
@@ -182,5 +183,13 @@ func goToNextStep(p *ParsingContext) {
 }
 
 func storeNameInfo(pluginName string, p *ParsingContext) {
+	createStepIfNeeded(p)
 	p.currentStep.Name = pluginName
+}
+
+func createStepIfNeeded(p *ParsingContext){
+	if p.currentStep == nil {
+		p.currentStep = new(StepDetails)
+	}
+	
 }
