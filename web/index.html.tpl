@@ -8,7 +8,7 @@
 <body>
 	<div class="main-section">
 		<p style="color:#fff">
-		Last updated at ssfsdfd. See steps.codefresh.io for more details. Next update in 1 hour
+		Last updated at {{.Now.Format "02 Jan 06 15:04 MST"}}. See <a href="https://codefresh.io/steps/">https://codefresh.io/steps/</a> for more details. Next update in 1 hour.
 		</p>
 		<div class="dashbord email-content">
 			<div class="title-section">

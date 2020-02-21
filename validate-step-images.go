@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"time"
 )
 
 func main() {
@@ -58,7 +59,15 @@ func main() {
 	}
 	defer f.Close()
 
-	tmpl.Execute(f, nil)
+	type templateData struct {
+		Now time.Time
+	}
+
+	tData := templateData{
+		Now: time.Now(),
+	}
+
+	tmpl.Execute(f, tData)
 
 	if err != nil {
 		log.Fatal("execute: ", err)
