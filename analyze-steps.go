@@ -2,41 +2,40 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
 	"strings"
 )
 
-type StepStatus int
+type stepStatus int
 
 const (
-	Ok StepStatus = iota + 1
-	NotOk
-	Incomplete
+	ok stepStatus = iota + 1
+	notOk
+	incomplete
 )
 
-type DockerImageName struct {
-	BaseImage string
-	Tag       string
-	HasTag    bool
+type dockerImageName struct {
+	baseImage string
+	tag       string
+	hasTag    bool
 }
-type StepDetails struct {
-	Name       string
-	Version    string
-	SourceURL  string
-	Status     StepStatus
-	ImagesUsed []DockerImageName
+type stepDetails struct {
+	name       string
+	version    string
+	sourceURL  string
+	status     stepStatus
+	imagesUsed []dockerImageName
 }
 
-type ParsingContext struct {
+type parsingContext struct {
 	nestingLevel  int
-	currentStep   *StepDetails
-	finishedSteps []StepDetails
+	currentStep   *stepDetails
+	finishedSteps []stepDetails
 }
 
-func readJSON(fileName string) []StepDetails {
+func readJSON(fileName string) []stepDetails {
 
 	jsonFile, err := os.Open(fileName)
 
@@ -55,7 +54,7 @@ func readJSON(fileName string) []StepDetails {
 	json.Unmarshal(jsonData, &v)
 
 	data := v.([]interface{})
-	p := new(ParsingContext)
+	p := new(parsingContext)
 	p.nestingLevel = 0
 
 	for _, stepDef := range data {
@@ -69,52 +68,51 @@ func readJSON(fileName string) []StepDetails {
 
 }
 
-func readSingleStep(stepContent map[string]interface{}, p *ParsingContext) {
-	p.currentStep = new(StepDetails)
+func readSingleStep(stepContent map[string]interface{}, p *parsingContext) {
+	p.currentStep = new(stepDetails)
 	p.nestingLevel = 0
 
 	visitMap(stepContent, p)
 
 	p.finishedSteps = append(p.finishedSteps, *p.currentStep)
-	fmt.Println(">>>>>>>>>>>>>Finished with new step ", p.currentStep.Name)
 
 }
 
-func visitMap(stepContent map[string]interface{}, p *ParsingContext) {
+func visitMap(stepContent map[string]interface{}, p *parsingContext) {
 
 	for k, v := range stepContent {
 		// fmt.Printf("Inside %s at %d\n", k, p.nestingLevel)
 
 		switch v := v.(type) {
 		case string:
-			fmt.Println(k, v, "(Found string at )", p.nestingLevel)
+			// fmt.Println(k, v, "(Found string at )", p.nestingLevel)
 			storeStepInfo(k, v, p)
 		case []interface{}:
-			fmt.Println(k, "(Found array):")
+			// fmt.Println(k, "(Found array):")
 			storeSourcesInfo(k, v, p)
 			// for i, u := range v {
 			// 	fmt.Println("    ", i, u)
 			// }
 		case map[string]interface{}:
-			fmt.Println(k, "(Found object): ")
+			// fmt.Println(k, "(Found object): ")
 			p.nestingLevel++
 			visitMap(v, p)
 			p.nestingLevel--
-		default:
-			fmt.Println(k, v, "(Found unknown)")
+			// default:
+			// 	fmt.Println(k, v, "(Found unknown)")
 		}
 
 	}
 
 }
-func storeSourcesInfo(key string, values []interface{}, p *ParsingContext) {
+func storeSourcesInfo(key string, values []interface{}, p *parsingContext) {
 	if p.nestingLevel != 1 || key != "sources" || len(values) == 0 {
 		return
 	}
-	p.currentStep.SourceURL = values[0].(string)
+	p.currentStep.sourceURL = values[0].(string)
 }
 
-func storeStepInfo(key string, value string, p *ParsingContext) {
+func storeStepInfo(key string, value string, p *parsingContext) {
 	switch key {
 	case "image":
 		storeImageInfo(value, p)
@@ -132,28 +130,26 @@ func storeStepInfo(key string, value string, p *ParsingContext) {
 	}
 }
 
-func storeImageInfo(fullDockerImage string, p *ParsingContext) {
-	var dockerImage DockerImageName
+func storeImageInfo(fullDockerImage string, p *parsingContext) {
+	var dockerImage dockerImageName
 
 	if strings.Contains(fullDockerImage, ":") {
 		imageAndTag := strings.Split(fullDockerImage, ":")
-		dockerImage.BaseImage = imageAndTag[0]
-		dockerImage.HasTag = true
-		dockerImage.Tag = imageAndTag[1]
+		dockerImage.baseImage = imageAndTag[0]
+		dockerImage.hasTag = true
+		dockerImage.tag = imageAndTag[1]
 
 	} else {
-		dockerImage.HasTag = false
-		dockerImage.BaseImage = fullDockerImage
+		dockerImage.hasTag = false
+		dockerImage.baseImage = fullDockerImage
 	}
-	p.currentStep.ImagesUsed = append(p.currentStep.ImagesUsed, dockerImage)
+	p.currentStep.imagesUsed = append(p.currentStep.imagesUsed, dockerImage)
 }
 
-func storeVersionInfo(pluginVersion string, p *ParsingContext) {
-	p.currentStep.Version = pluginVersion
+func storeVersionInfo(pluginVersion string, p *parsingContext) {
+	p.currentStep.version = pluginVersion
 }
 
-func storeNameInfo(pluginName string, p *ParsingContext) {
-	p.currentStep.Name = pluginName
-	fmt.Println(">>>>>>>>>>>>>Found step ", pluginName)
-
+func storeNameInfo(pluginName string, p *parsingContext) {
+	p.currentStep.name = pluginName
 }
