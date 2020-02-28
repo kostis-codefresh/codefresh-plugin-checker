@@ -164,16 +164,16 @@
 		
 	{{range $item, $step := .FinishedSteps}}
 
-           	<div class="dashbord email-content">
+           	<div class="dashbord {{if (eq $step.Status 1)}} valid-step {{end}}">
 			<div class="title-section">
-				<p>{{$step.Name}} {{$step.Version}}</p>
+				<p>{{$step.Status}} {{$step.Name}} {{$step.Version}}</p>
 			</div>
 			<div class="icon-text-section">
 				<div class="icon-section">
 					<i class="fab fa-docker" aria-hidden="true"></i>
 				</div>
 				<div class="text-section">
-					<h1>{{$item}}</h1>
+					<h1>{{len $step.ImagesUsed }} Docker image(s) used</h1>
 					<span>+7% email list penetration</span>
 				</div>
 				<div style="clear:both;"></div>

@@ -48,6 +48,8 @@ func main() {
 
 	fmt.Printf("Found %d steps\n", len(stepsFound))
 
+	postProcessSteps(stepsFound)
+
 	tmpl, err := template.ParseFiles("web/index.html.tpl")
 	if err != nil {
 		log.Fatal(err)
@@ -75,6 +77,17 @@ func main() {
 		log.Fatal("execute: ", err)
 	}
 
+}
+
+func postProcessSteps(stepsFound []stepDetails) {
+	for i := range stepsFound {
+		if len(stepsFound[i].ImagesUsed) == 0 {
+			stepsFound[i].Status = incomplete
+			continue
+		}
+
+		stepsFound[i].Status = ok
+	}
 }
 
 func checkErr(err error) {

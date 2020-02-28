@@ -143,6 +143,17 @@ func storeImageInfo(fullDockerImage string, p *parsingContext) {
 		dockerImage.HasTag = false
 		dockerImage.BaseImage = fullDockerImage
 	}
+
+	//For tags with variables like $MY_TAG we will just check latest. For image names with variables
+	// we cannot really do anything
+	if strings.Contains(dockerImage.BaseImage, "$") {
+		return
+	}
+	if strings.Contains(dockerImage.Tag, "$") {
+		dockerImage.Tag = ""
+		dockerImage.HasTag = false
+	}
+
 	p.currentStep.ImagesUsed = append(p.currentStep.ImagesUsed, dockerImage)
 }
 
