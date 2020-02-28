@@ -160,31 +160,39 @@
 			</div>
 		</div>
 
-		<div class="dashbord email-content">
+	
+		
+	{{range $item, $step := .FinishedSteps}}
+
+           	<div class="dashbord email-content">
 			<div class="title-section">
-				<p>SENT EMAILS</p>
+				<p>{{$step.Name}} {{$step.Version}}</p>
 			</div>
 			<div class="icon-text-section">
 				<div class="icon-section">
 					<i class="fab fa-docker" aria-hidden="true"></i>
 				</div>
 				<div class="text-section">
-					<h1>200</h1>
+					<h1>{{$item}}</h1>
 					<span>+7% email list penetration</span>
 				</div>
 				<div style="clear:both;"></div>
 			</div>
 			<div class="detail-section">
-				<a href="#">
-					<p>View Detail</p>
+				<a href="{{$step.SourceURL}}">
+					<p>View Source code</p>
 					<i class="fa fa-arrow-right" aria-hidden="true"></i>
 				</a>
 			</div>
 		</div>
-		
+
+    {{end}}
+
+
+
+
+
 	</div>
-	<div>
-		Hello world
-	</div>
+
 </body>
 </html>

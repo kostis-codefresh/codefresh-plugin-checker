@@ -17,16 +17,16 @@ const (
 )
 
 type dockerImageName struct {
-	baseImage string
-	tag       string
-	hasTag    bool
+	BaseImage string
+	Tag       string
+	HasTag    bool
 }
 type stepDetails struct {
-	name       string
-	version    string
-	sourceURL  string
-	status     stepStatus
-	imagesUsed []dockerImageName
+	Name       string
+	Version    string
+	SourceURL  string
+	Status     stepStatus
+	ImagesUsed []dockerImageName
 }
 
 type parsingContext struct {
@@ -109,7 +109,7 @@ func storeSourcesInfo(key string, values []interface{}, p *parsingContext) {
 	if p.nestingLevel != 1 || key != "sources" || len(values) == 0 {
 		return
 	}
-	p.currentStep.sourceURL = values[0].(string)
+	p.currentStep.SourceURL = values[0].(string)
 }
 
 func storeStepInfo(key string, value string, p *parsingContext) {
@@ -135,21 +135,21 @@ func storeImageInfo(fullDockerImage string, p *parsingContext) {
 
 	if strings.Contains(fullDockerImage, ":") {
 		imageAndTag := strings.Split(fullDockerImage, ":")
-		dockerImage.baseImage = imageAndTag[0]
-		dockerImage.hasTag = true
-		dockerImage.tag = imageAndTag[1]
+		dockerImage.BaseImage = imageAndTag[0]
+		dockerImage.HasTag = true
+		dockerImage.Tag = imageAndTag[1]
 
 	} else {
-		dockerImage.hasTag = false
-		dockerImage.baseImage = fullDockerImage
+		dockerImage.HasTag = false
+		dockerImage.BaseImage = fullDockerImage
 	}
-	p.currentStep.imagesUsed = append(p.currentStep.imagesUsed, dockerImage)
+	p.currentStep.ImagesUsed = append(p.currentStep.ImagesUsed, dockerImage)
 }
 
 func storeVersionInfo(pluginVersion string, p *parsingContext) {
-	p.currentStep.version = pluginVersion
+	p.currentStep.Version = pluginVersion
 }
 
 func storeNameInfo(pluginName string, p *parsingContext) {
-	p.currentStep.name = pluginName
+	p.currentStep.Name = pluginName
 }

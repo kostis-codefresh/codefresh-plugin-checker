@@ -60,14 +60,16 @@ func main() {
 	defer f.Close()
 
 	type templateData struct {
-		Now time.Time
+		Now           time.Time
+		FinishedSteps []stepDetails
 	}
 
 	tData := templateData{
-		Now: time.Now(),
+		Now:           time.Now(),
+		FinishedSteps: stepsFound,
 	}
 
-	tmpl.Execute(f, tData)
+	err = tmpl.Execute(f, tData)
 
 	if err != nil {
 		log.Fatal("execute: ", err)
