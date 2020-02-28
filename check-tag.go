@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/heroku/docker-registry-client/registry"
@@ -16,7 +15,7 @@ func connectToDockerHub() *registry.Registry {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Connection successful")
+	log.Println("Connection successful")
 	return dockeHubConnection
 }
 
@@ -26,7 +25,7 @@ func checkDockerImage(dockerHubConnection *registry.Registry, imageAndTag docker
 		log.Println(err)
 		return false
 	}
-	fmt.Println("Found dockerhub tags: ", tags)
+	log.Println("Found Dockerhub tags: ", tags)
 	if imageAndTag.HasTag == false {
 		return true
 	}

@@ -10,7 +10,6 @@ import (
 )
 
 func main() {
-	fmt.Println("Checking node image")
 
 	if len(os.Args) < 2 {
 		fmt.Println("Input JSON file is missing.")
@@ -21,12 +20,13 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Println("Creating output directory at _site")
 
 	copy("web/style.css", "_site/style.css")
 
 	stepsFound := readJSON(os.Args[1])
 
-	fmt.Printf("Found %d steps\n", len(stepsFound))
+	log.Printf("Found %d custom steps in the Codefresh marketplace\n", len(stepsFound))
 
 	postProcessSteps(stepsFound)
 

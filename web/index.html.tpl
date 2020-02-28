@@ -10,167 +10,17 @@
 		<p style="color:#fff">
 		Last updated at {{.Now.Format "02 Jan 06 15:04 MST"}}. See <a href="https://codefresh.io/steps/">https://codefresh.io/steps/</a> for more details. Next update in 1 hour.
 		</p>
-		<div class="dashbord email-content">
-			<div class="title-section">
-				<p>SENT EMAILS</p>
-			</div>
-			<div class="icon-text-section">
-				<div class="icon-section">
-					<i class="fab fa-docker" aria-hidden="true"></i>
-				</div>
-				<div class="text-section">
-					<h1>200</h1>
-					<span>+7% email list penetration</span>
-				</div>
-				<div style="clear:both;"></div>
-			</div>
-			<div class="detail-section">
-				<a href="#">
-					<p>View Detail</p>
-					<i class="fa fa-arrow-right" aria-hidden="true"></i>
-				</a>
-			</div>
-		</div>
-		<div class="dashbord valid-step">
-			<div class="title-section">
-				<p>CLOUD DOWNLOAD</p>
-			</div>
-			<div class="icon-text-section">
-				<div class="icon-section">
-					<i class="fa fa-download" aria-hidden="true"></i>
-				</div>
-				<div class="text-section">
-					<h1>8.25 <small>k</small></h1>
-					<span>12% have started download</span>
-				</div>
-				<div style="clear:both;"></div>
-			</div>
-			<div class="detail-section">
-				<a href="#">
-					<p>View Detail</p>
-					<i class="fa fa-arrow-right" aria-hidden="true"></i>
-				</a>
-			</div>
-		</div>
-		<div class="dashbord invalid-step">
-			<div class="title-section">
-				<p>SALES FROM YOUR CREDIT-CARD</p>
-			</div>
-			<div class="icon-text-section">
-				<div class="icon-section">
-					<i class="far fa-angry" aria-hidden="true"></i>
-				</div>
-				<div class="text-section">
-					<h1>360 <small>$</small></h1>
-					<span>$ 272 credit in your account</span>
-				</div>
-				<div style="clear:both;"></div>
-			</div>
-			<div class="detail-section">
-				<a href="#">
-					<p>View Detail</p>
-					<i class="fa fa-check-circle" aria-hidden="true"></i>
-				</a>
-			</div>
-		</div>
 
-		<div class="dashbord email-content">
-			<div class="title-section">
-				<p>SENT EMAILS</p>
-			</div>
-			<div class="icon-text-section">
-				<div class="icon-section">
-					<i class="fa fa-check"></i>
-				</div>
-				<div class="text-section">
-					<h1>200</h1>
-					<span>+7% email list penetration</span>
-				</div>
-				<div style="clear:both;"></div>
-			</div>
-			<div class="detail-section">
-				<a href="#">
-					<p>View Detail</p>
-					<i class="fa fa-arrow-right" aria-hidden="true"></i>
-				</a>
-			</div>
-		</div>
-		<div class="dashbord valid-step">
-			<div class="title-section">
-				<p>CLOUD DOWNLOAD</p>
-			</div>
-			<div class="icon-text-section">
-				<div class="icon-section">
-					<i class="fa fa-frown" aria-hidden="true"></i>
-				</div>
-				<div class="text-section">
-					<h1>8.25 <small>k</small></h1>
-					<span>12% have started download</span>
-				</div>
-				<div style="clear:both;"></div>
-			</div>
-			<div class="detail-section">
-				<a href="#">
-					<p>View Detail</p>
-					<i class="far fa-frown" aria-hidden="true"></i>
-				</a>
-			</div>
-		</div>
-		<div class="dashbord invalid-step">
-			<div class="title-section">
-				<p>SALES FROM YOUR CREDIT-CARD</p>
-			</div>
-			<div class="icon-text-section">
-				<div class="icon-section">
-					<i class="fa fa-credit-card" aria-hidden="true"></i>
-				</div>
-				<div class="text-section">
-					<h1>360 <small>$</small></h1>
-					<span>$ 272 credit in your account</span>
-				</div>
-				<div style="clear:both;"></div>
-			</div>
-			<div class="detail-section">
-				<a href="#">
-					<p>View Detail</p>
-					<i class="fa fa-arrow-right" aria-hidden="true"></i>
-				</a>
-			</div>
-		</div>
-
-		<div class="dashbord email-content">
-			<div class="title-section">
-				<p>SENT EMAILS</p>
-			</div>
-			<div class="icon-text-section">
-				<div class="icon-section">
-					<i class="fab fa-docker" aria-hidden="true"></i>
-				</div>
-				<div class="text-section">
-					<h1>200</h1>
-					<span>+7% email list penetration</span>
-				</div>
-				<div style="clear:both;"></div>
-			</div>
-			<div class="detail-section">
-				<a href="#">
-					<p>View Detail</p>
-					<i class="fa fa-arrow-right" aria-hidden="true"></i>
-				</a>
-			</div>
-		</div>
-
-	
 		
 	{{range $item, $step := .FinishedSteps}}
 
-           	<div class="dashbord {{if (eq $step.Status 1)}} valid-step {{end}}">
+           	<div class="dashbord {{if (eq $step.Status 1)}} valid-step {{else if (eq $step.Status 2)}} invalid-step {{end}}">
 			<div class="title-section">
 				<p>{{$step.Status}} {{$step.Name}} {{$step.Version}}</p>
 			</div>
 			<div class="icon-text-section">
 				<div class="icon-section">
-					<i class="fab fa-docker" aria-hidden="true"></i>
+					<i class="{{if (eq $step.Status 1)}} fa fa-check {{else if (eq $step.Status 2)}} fa fa-frown {{else}} fab fa-docker {{end}}" aria-hidden="true"></i>
 				</div>
 				<div class="text-section">
 					<h1>{{len $step.ImagesUsed }} Docker image(s) used</h1>
