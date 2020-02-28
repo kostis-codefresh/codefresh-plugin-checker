@@ -64,27 +64,27 @@ body{
 .dashbord .detail-section:hover{
 	background-color:#5a5a5a;
 }
-.download-content .title-section{
+.valid-step .title-section{
 	background-color:#B0DA7A;
 }
-.download-content .icon-text-section{
+.valid-step .icon-text-section{
 	background-color: #9CD159;
 }
-.download-content .detail-section{
+.valid-step .detail-section{
 	background-color: #8DBC50;
 }
-.download-content .icon-section{
+.valid-step .icon-section{
 	color:#B9DE8A;
 }
-.product-content .title-section{
+.invalid-step .title-section{
 	background-color:#FF7979;
 }
-.product-content .icon-text-section{
+.invalid-step .icon-text-section{
 	background-color:#FF5757;
 }
-.product-content .icon-section{
+.invalid-step .icon-section{
 	color:#FF8989;
 }
-.product-content .detail-section{
+.invalid-step .detail-section{
 	background-color:#E64F4F;
 }

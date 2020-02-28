@@ -31,7 +31,7 @@
 				</a>
 			</div>
 		</div>
-		<div class="dashbord download-content">
+		<div class="dashbord valid-step">
 			<div class="title-section">
 				<p>CLOUD DOWNLOAD</p>
 			</div>
@@ -52,7 +52,7 @@
 				</a>
 			</div>
 		</div>
-		<div class="dashbord product-content">
+		<div class="dashbord invalid-step">
 			<div class="title-section">
 				<p>SALES FROM YOUR CREDIT-CARD</p>
 			</div>
@@ -95,7 +95,7 @@
 				</a>
 			</div>
 		</div>
-		<div class="dashbord download-content">
+		<div class="dashbord valid-step">
 			<div class="title-section">
 				<p>CLOUD DOWNLOAD</p>
 			</div>
@@ -116,7 +116,7 @@
 				</a>
 			</div>
 		</div>
-		<div class="dashbord product-content">
+		<div class="dashbord invalid-step">
 			<div class="title-section">
 				<p>SALES FROM YOUR CREDIT-CARD</p>
 			</div>
@@ -137,6 +137,51 @@
 				</a>
 			</div>
 		</div>
+
+		<div class="dashbord email-content">
+			<div class="title-section">
+				<p>SENT EMAILS</p>
+			</div>
+			<div class="icon-text-section">
+				<div class="icon-section">
+					<i class="fab fa-docker" aria-hidden="true"></i>
+				</div>
+				<div class="text-section">
+					<h1>200</h1>
+					<span>+7% email list penetration</span>
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+			<div class="detail-section">
+				<a href="#">
+					<p>View Detail</p>
+					<i class="fa fa-arrow-right" aria-hidden="true"></i>
+				</a>
+			</div>
+		</div>
+
+		<div class="dashbord email-content">
+			<div class="title-section">
+				<p>SENT EMAILS</p>
+			</div>
+			<div class="icon-text-section">
+				<div class="icon-section">
+					<i class="fab fa-docker" aria-hidden="true"></i>
+				</div>
+				<div class="text-section">
+					<h1>200</h1>
+					<span>+7% email list penetration</span>
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+			<div class="detail-section">
+				<a href="#">
+					<p>View Detail</p>
+					<i class="fa fa-arrow-right" aria-hidden="true"></i>
+				</a>
+			</div>
+		</div>
+		
 	</div>
 	<div>
 		Hello world
