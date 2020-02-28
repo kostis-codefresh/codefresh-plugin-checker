@@ -17,9 +17,10 @@ const (
 )
 
 type dockerImageName struct {
-	BaseImage string
-	Tag       string
-	HasTag    bool
+	BaseImage       string
+	Tag             string
+	HasTag          bool
+	FoundInRegistry bool
 }
 type stepDetails struct {
 	Name       string

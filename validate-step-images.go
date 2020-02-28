@@ -1,10 +1,6 @@
 package main
 
 import (
-	// "github.com/docker/distribution/digest"
-	// "github.com/docker/distribution/manifest"
-	// "github.com/docker/libtrust"
-	//"flag"
 	"fmt"
 	"html/template"
 	"io/ioutil"
@@ -15,22 +11,6 @@ import (
 
 func main() {
 	fmt.Println("Checking node image")
-
-	// url := "https://registry.hub.docker.com"
-	// username := "" // anonymous
-	// password := "" // anonymous
-	// hub, err := registry.New(url, username, password)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	// fmt.Println("Connection successful")
-
-	// tags, err := hub.Tags("heroku/cedar")
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// fmt.Println("2d: ", tags)
 
 	if len(os.Args) < 2 {
 		fmt.Println("Input JSON file is missing.")
@@ -80,6 +60,9 @@ func main() {
 }
 
 func postProcessSteps(stepsFound []stepDetails) {
+
+	dockeHubConnection := connectToDockerHub()
+
 	for i := range stepsFound {
 		if len(stepsFound[i].ImagesUsed) == 0 {
 			stepsFound[i].Status = incomplete
@@ -87,6 +70,14 @@ func postProcessSteps(stepsFound []stepDetails) {
 		}
 
 		stepsFound[i].Status = ok
+
+		for y := range stepsFound[i].ImagesUsed {
+			stepsFound[i].ImagesUsed[y].FoundInRegistry = checkDockerImage(dockeHubConnection, stepsFound[i].ImagesUsed[y])
+			if stepsFound[i].ImagesUsed[y].FoundInRegistry == false {
+				stepsFound[i].Status = notOk
+			}
+		}
+
 	}
 }
 
