@@ -23,11 +23,12 @@ type dockerImageName struct {
 	FoundInRegistry bool
 }
 type stepDetails struct {
-	Name       string
-	Version    string
-	SourceURL  string
-	Status     stepStatus
-	ImagesUsed []dockerImageName
+	Name         string
+	Version      string
+	SourceURL    string
+	Status       stepStatus
+	ImagesUsed   []dockerImageName
+	ImageSummary string
 }
 
 type parsingContext struct {

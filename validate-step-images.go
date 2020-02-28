@@ -75,6 +75,7 @@ func postProcessSteps(stepsFound []stepDetails) {
 			stepsFound[i].ImagesUsed[y].FoundInRegistry = checkDockerImage(dockeHubConnection, stepsFound[i].ImagesUsed[y])
 			if stepsFound[i].ImagesUsed[y].FoundInRegistry == false {
 				stepsFound[i].Status = notOk
+				stepsFound[i].ImageSummary += stepsFound[i].ImagesUsed[y].BaseImage + ":" + stepsFound[i].ImagesUsed[y].Tag + " "
 			}
 		}
 

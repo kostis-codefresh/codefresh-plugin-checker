@@ -16,7 +16,7 @@
 
            	<div class="dashbord {{if (eq $step.Status 1)}} valid-step {{else if (eq $step.Status 2)}} invalid-step {{end}}">
 			<div class="title-section">
-				<p>{{$step.Status}} {{$step.Name}} {{$step.Version}}</p>
+				<p>{{$step.Name}} {{$step.Version}}</p>
 			</div>
 			<div class="icon-text-section">
 				<div class="icon-section">
@@ -24,7 +24,7 @@
 				</div>
 				<div class="text-section">
 					<h1>{{len $step.ImagesUsed }} Docker image(s) used</h1>
-					<span>+7% email list penetration</span>
+					<span>{{$step.ImageSummary }}</span>
 				</div>
 				<div style="clear:both;"></div>
 			</div>
