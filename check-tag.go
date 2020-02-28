@@ -10,13 +10,14 @@ func connectToDockerHub() *registry.Registry {
 	url := "https://registry.hub.docker.com"
 	username := "" // anonymous
 	password := "" // anonymous
-	dockeHubConnection, err := registry.New(url, username, password)
+	dockerHubConnection, err := registry.New(url, username, password)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	log.Println("Connection successful")
-	return dockeHubConnection
+
+	return dockerHubConnection
 }
 
 func checkDockerImage(dockerHubConnection *registry.Registry, imageAndTag dockerImageName) bool {
