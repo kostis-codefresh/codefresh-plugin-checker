@@ -1,0 +1,90 @@
+body{
+        background:#000000;
+	font-family: 'Lato', sans-serif;
+}
+.main-section{
+	width:80%;
+	margin:0 auto;
+}
+.dashbord{
+	margin-top:30px;
+	margin-right: 10px;
+	display: inline-block;
+	width:30%;
+	color:#fff;
+	border-radius: 3px;
+}
+.title-section{
+	border-radius: 5px 5px 0px 0px;
+	text-align: center;
+	background-color:#7CD6F8;
+	padding:7px 0px;
+}
+.title-section p{
+	margin:0px;
+	font-size:13px;
+}
+.icon-text-section{
+	background-color:#5BCCF6;
+	padding:5px 10px;
+}
+.icon-section{
+	font-size:50px;
+	float:left;
+	width:20%;
+	color:#8BDBF8;
+}
+.text-section{
+	width:80%;
+	float:right;
+	text-align: right;
+}
+.text-section h1{
+	margin:0px;
+	font-size:25px;
+}
+.detail-section{
+	background-color: #52B8DE;
+	cursor: pointer;
+	border-radius: 0px 0px 5px 5px;
+}
+.detail-section a{
+	color:#fff;
+}
+.detail-section a p{
+	display: inline-block;
+	margin: 0px;
+	font-size: 12px;
+	padding:10px;
+}
+.detail-section a i{
+	float:right;
+	padding: 10px 5px 0px 0px;
+}
+.dashbord .detail-section:hover{
+	background-color:#5a5a5a;
+}
+.valid-step .title-section{
+	background-color:#B0DA7A;
+}
+.valid-step .icon-text-section{
+	background-color: #9CD159;
+}
+.valid-step .detail-section{
+	background-color: #8DBC50;
+}
+.valid-step .icon-section{
+	color:#B9DE8A;
+}
+.invalid-step .title-section{
+	background-color:#FF7979;
+}
+.invalid-step .icon-text-section{
+	background-color:#FF5757;
+}
+.invalid-step .icon-section{
+	color:#FF8989;
+}
+.invalid-step .detail-section{
+	background-color:#E64F4F;
+}
