@@ -16,13 +16,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	err := os.MkdirAll("_site", 0755)
+	err := os.MkdirAll("docs", 0755)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println("Creating output directory at _site")
+	log.Println("Creating output directory at docs")
 
-	copy("web/style.css", "_site/style.css")
+	copy("web/style.css", "docs/style.css")
 
 	stepsFound := readJSON(os.Args[1])
 
@@ -35,7 +35,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	f, err := os.Create("_site/index.html")
+	f, err := os.Create("docs/index.html")
 	if err != nil {
 		log.Fatal("create file: ", err)
 	}
