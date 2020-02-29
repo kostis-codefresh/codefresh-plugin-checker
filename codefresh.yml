@@ -1,0 +1,57 @@
+version: "1.0"
+stages:
+  - prepare
+  - test
+  - analyze
+  - report
+  - upload
+steps:
+  my_clone:
+    title: Cloning source code
+    type: git-clone
+    stage: prepare
+    arguments:
+      repo: 'kostis-codefresh/codefresh-plugin-checker'
+      git: github-1
+      revision: 'master'  
+  run_unit_tests:
+    title: Running unit tests
+    stage: test
+    image: 'golang:1.12'
+    working_directory: ${{my_clone}}
+    commands:
+      - git checkout master
+      - go test -v
+    environment:
+    - GOPATH=/codefresh/volume/go
+  get_step_info:
+    title: Read Step info
+    stage: analyze
+    image: 'codefresh/cli'
+    working_directory: ${{my_clone}}
+    commands:
+      - codefresh get step-type --limit 0 -o json > step-info.json
+      - cf_export GITHUB_TOKEN=$(codefresh get context github-1 --decrypt -o yaml | yq -y .spec.data.auth.password)
+  create_report:
+    title: Creating report
+    stage: analyze
+    image: 'golang:1.12'
+    working_directory: ${{my_clone}}
+    commands:
+      - go run . step-info.json
+    environment:
+    - GOPATH=/codefresh/volume/go    
+  upload_report:
+    title: Uploading report
+    stage: report
+    image: 'alpine/git'
+    working_directory: ${{my_clone}}
+    commands:
+      - git config --global user.email "kostis@codefresh.io"
+      - git config --global user.name "Kostis Kapelonis" 
+      - git add docs/*
+      - git status
+      - git commit -m "Automatic CI report"
+      - git push "https://kostis-codefresh:$GITHUB_TOKEN@github.com/kostis-codefresh/codefresh-plugin-checker" master 
+      - echo "Report is ready at https://kostis-codefresh.github.io/codefresh-plugin-checker/"
+    
