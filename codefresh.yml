@@ -48,11 +48,13 @@ steps:
     working_directory: ${{my_clone}}
     commands:
       - git config --global user.email "kostis@codefresh.io"
-      - git config --global user.name "Kostis Kapelonis"
-      - git co origin/gh-pages gh-pages
-      - git merge origin/master
-      - git add docs/*
+      - git config --global user.name "Kostis Kapelonis" 
+      - cd /tmp
+      - git clone --depth 1 https://kostis-codefresh:$GITHUB_TOKEN@github.com/kostis-codefresh/codefresh-plugin-checker.git -b gh-pages
+      - cd codefresh-plugin-checker
+      - cp /codefresh/volume/codefresh-plugin-checker/docs/* .
+      - git add .
       - git status
       - git commit -m "Automatic CI report"
-      - git push "https://kostis-codefresh:$GITHUB_TOKEN@github.com/kostis-codefresh/codefresh-plugin-checker" gh-pages
+      - git push "https://kostis-codefresh:$GITHUB_TOKEN@github.com/kostis-codefresh/codefresh-plugin-checker" gh-pages 
       - echo "Report is ready at https://kostis-codefresh.github.io/codefresh-plugin-checker/"
