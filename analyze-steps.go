@@ -137,13 +137,13 @@ func storeImageInfo(fullDockerImage string, p *parsingContext) {
 
 	if strings.Contains(fullDockerImage, ":") {
 		imageAndTag := strings.Split(fullDockerImage, ":")
-		dockerImage.BaseImage = imageAndTag[0]
+		dockerImage.BaseImage = prepareBaseImage(imageAndTag[0])
 		dockerImage.HasTag = true
 		dockerImage.Tag = imageAndTag[1]
 
 	} else {
 		dockerImage.HasTag = false
-		dockerImage.BaseImage = fullDockerImage
+		dockerImage.BaseImage = prepareBaseImage(fullDockerImage)
 	}
 
 	//For tags with variables like $MY_TAG we will just check latest. For image names with variables

@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"strings"
 
 	"github.com/heroku/docker-registry-client/registry"
 )
@@ -37,5 +38,15 @@ func checkDockerImage(dockerHubConnection *registry.Registry, imageAndTag docker
 		}
 	}
 	return false
+}
 
+func prepareBaseImage(input string) string {
+	output := input
+	trimPrefixes := [1]string{"docker.io/"}
+
+	for _, prefix := range trimPrefixes {
+		output = strings.TrimPrefix(output, prefix)
+	}
+
+	return output
 }
