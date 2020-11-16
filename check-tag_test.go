@@ -13,8 +13,21 @@ func TestCheckDockerImageWithValidImage(t *testing.T) {
 		Tag:       "latest",
 	}
 
-	dockeHubConnection := connectToDockerHub()
-	foundInRegistry := checkDockerImage(dockeHubConnection, imageAndTag)
+	registryConnection := connectToRegistryOfImage(&imageAndTag)
+	foundInRegistry := checkDockerImage(registryConnection, imageAndTag)
+
+	assert.True(t, foundInRegistry, "Should be found in docker registry")
+}
+
+func TestCheckDockerImageWithFullDomain(t *testing.T) {
+	imageAndTag := dockerImageName{
+		BaseImage: "docker.io/codefresh/cf-sendmail",
+		HasTag:    true,
+		Tag:       "latest",
+	}
+
+	registryConnection := connectToRegistryOfImage(&imageAndTag)
+	foundInRegistry := checkDockerImage(registryConnection, imageAndTag)
 
 	assert.True(t, foundInRegistry, "Should be found in docker registry")
 }
@@ -26,20 +39,34 @@ func TestCheckDockerImageWithInvalidImage(t *testing.T) {
 		Tag:       "bar",
 	}
 
-	dockeHubConnection := connectToDockerHub()
-	foundInRegistry := checkDockerImage(dockeHubConnection, imageAndTag)
+	registryConnection := connectToRegistryOfImage(&imageAndTag)
+	foundInRegistry := checkDockerImage(registryConnection, imageAndTag)
 
 	assert.False(t, foundInRegistry, "Should be found in docker registry")
 }
 
-func TestPrepareBaseImageWithoutPrefixes(t *testing.T) {
-	output := prepareBaseImage("codefresh/cf-sendmail")
+func TestCheckGCRImageWithValidImage(t *testing.T) {
+	imageAndTag := dockerImageName{
+		BaseImage: "gcr.io/cloud-builders/mvn",
+		HasTag:    true,
+		Tag:       "3.5.0-jdk-8",
+	}
 
-	assert.EqualValues(t, "codefresh/cf-sendmail", output, "Should be the same")
+	registryConnection := connectToRegistryOfImage(&imageAndTag)
+	foundInRegistry := checkDockerImage(registryConnection, imageAndTag)
+
+	assert.True(t, foundInRegistry, "Should be found in docker registry")
 }
 
-func TestPrepareBaseImageWithDockerioPrefix(t *testing.T) {
-	output := prepareBaseImage("docker.io/codefresh/cf-sendmail")
+func TestCheckGCRImageWithoutTag(t *testing.T) {
+	imageAndTag := dockerImageName{
+		BaseImage: "gcr.io/cloud-builders/git",
+		HasTag:    false,
+		Tag:       "",
+	}
 
-	assert.EqualValues(t, "codefresh/cf-sendmail", output, "Should remove 'docker.io/'")
+	registryConnection := connectToRegistryOfImage(&imageAndTag)
+	foundInRegistry := checkDockerImage(registryConnection, imageAndTag)
+
+	assert.True(t, foundInRegistry, "Should be found in docker registry")
 }

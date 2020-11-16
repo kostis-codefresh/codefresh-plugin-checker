@@ -61,8 +61,6 @@ func main() {
 
 func postProcessSteps(stepsFound []stepDetails) {
 
-	dockeHubConnection := connectToDockerHub()
-
 	for i := range stepsFound {
 		if len(stepsFound[i].ImagesUsed) == 0 {
 			stepsFound[i].Status = incomplete
@@ -72,6 +70,7 @@ func postProcessSteps(stepsFound []stepDetails) {
 		stepsFound[i].Status = ok
 
 		for y := range stepsFound[i].ImagesUsed {
+			dockeHubConnection := connectToRegistryOfImage(&stepsFound[i].ImagesUsed[y])
 			stepsFound[i].ImagesUsed[y].FoundInRegistry = checkDockerImage(dockeHubConnection, stepsFound[i].ImagesUsed[y])
 			if stepsFound[i].ImagesUsed[y].FoundInRegistry == false {
 				stepsFound[i].Status = notOk
