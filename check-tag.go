@@ -55,17 +55,6 @@ func checkDockerImage(dockerHubConnection *registry.Registry, imageAndTag docker
 	return false
 }
 
-func prepareBaseImage(input string) string {
-	output := input
-	trimPrefixes := [1]string{"docker.io/"}
-
-	for _, prefix := range trimPrefixes {
-		output = strings.TrimPrefix(output, prefix)
-	}
-
-	return output
-}
-
 func createRegistryClient(ctx context.Context, domain string) (*registry.Registry, error) {
 
 	var (
