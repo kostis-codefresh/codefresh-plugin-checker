@@ -19,6 +19,19 @@ func TestCheckDockerImageWithValidImage(t *testing.T) {
 	assert.True(t, foundInRegistry, "Should be found in docker registry")
 }
 
+func TestCheckDockerImageWithFullDomain(t *testing.T) {
+	imageAndTag := dockerImageName{
+		BaseImage: "docker.io/codefresh/cf-sendmail",
+		HasTag:    true,
+		Tag:       "latest",
+	}
+
+	dockeHubConnection := connectToDockerHub()
+	foundInRegistry := checkDockerImage(dockeHubConnection, imageAndTag)
+
+	assert.True(t, foundInRegistry, "Should be found in docker registry")
+}
+
 func TestCheckDockerImageWithInvalidImage(t *testing.T) {
 	imageAndTag := dockerImageName{
 		BaseImage: "foo",
@@ -30,6 +43,32 @@ func TestCheckDockerImageWithInvalidImage(t *testing.T) {
 	foundInRegistry := checkDockerImage(dockeHubConnection, imageAndTag)
 
 	assert.False(t, foundInRegistry, "Should be found in docker registry")
+}
+
+func TestCheckGCRImageWithValidImage(t *testing.T) {
+	imageAndTag := dockerImageName{
+		BaseImage: "gcr.io/cloud-builders/mvn",
+		HasTag:    true,
+		Tag:       "3.5.0-jdk-8",
+	}
+
+	dockeHubConnection := connectToDockerHub()
+	foundInRegistry := checkDockerImage(dockeHubConnection, imageAndTag)
+
+	assert.True(t, foundInRegistry, "Should be found in docker registry")
+}
+
+func TestCheckGCRImageWithoutTag(t *testing.T) {
+	imageAndTag := dockerImageName{
+		BaseImage: "gcr.io/cloud-builders/git",
+		HasTag:    false,
+		Tag:       "",
+	}
+
+	dockeHubConnection := connectToDockerHub()
+	foundInRegistry := checkDockerImage(dockeHubConnection, imageAndTag)
+
+	assert.True(t, foundInRegistry, "Should be found in docker registry")
 }
 
 func TestPrepareBaseImageWithoutPrefixes(t *testing.T) {
