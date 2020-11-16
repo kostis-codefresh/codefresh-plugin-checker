@@ -19,6 +19,8 @@ const (
 type dockerImageName struct {
 	BaseImage       string
 	Tag             string
+	Domain          string
+	Path            string
 	HasTag          bool
 	FoundInRegistry bool
 }

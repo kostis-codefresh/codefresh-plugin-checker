@@ -13,8 +13,8 @@ func TestCheckDockerImageWithValidImage(t *testing.T) {
 		Tag:       "latest",
 	}
 
-	dockeHubConnection := connectToDockerHub()
-	foundInRegistry := checkDockerImage(dockeHubConnection, imageAndTag)
+	dockerHubConnection := connectToRegistryOfImage(&imageAndTag)
+	foundInRegistry := checkDockerImage(dockerHubConnection, imageAndTag)
 
 	assert.True(t, foundInRegistry, "Should be found in docker registry")
 }
@@ -26,7 +26,7 @@ func TestCheckDockerImageWithFullDomain(t *testing.T) {
 		Tag:       "latest",
 	}
 
-	dockeHubConnection := connectToDockerHub()
+	dockeHubConnection := connectToRegistryOfImage(&imageAndTag)
 	foundInRegistry := checkDockerImage(dockeHubConnection, imageAndTag)
 
 	assert.True(t, foundInRegistry, "Should be found in docker registry")
@@ -39,7 +39,7 @@ func TestCheckDockerImageWithInvalidImage(t *testing.T) {
 		Tag:       "bar",
 	}
 
-	dockeHubConnection := connectToDockerHub()
+	dockeHubConnection := connectToRegistryOfImage(&imageAndTag)
 	foundInRegistry := checkDockerImage(dockeHubConnection, imageAndTag)
 
 	assert.False(t, foundInRegistry, "Should be found in docker registry")
@@ -52,7 +52,7 @@ func TestCheckGCRImageWithValidImage(t *testing.T) {
 		Tag:       "3.5.0-jdk-8",
 	}
 
-	dockeHubConnection := connectToDockerHub()
+	dockeHubConnection := connectToRegistryOfImage(&imageAndTag)
 	foundInRegistry := checkDockerImage(dockeHubConnection, imageAndTag)
 
 	assert.True(t, foundInRegistry, "Should be found in docker registry")
@@ -65,7 +65,7 @@ func TestCheckGCRImageWithoutTag(t *testing.T) {
 		Tag:       "",
 	}
 
-	dockeHubConnection := connectToDockerHub()
+	dockeHubConnection := connectToRegistryOfImage(&imageAndTag)
 	foundInRegistry := checkDockerImage(dockeHubConnection, imageAndTag)
 
 	assert.True(t, foundInRegistry, "Should be found in docker registry")
