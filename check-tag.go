@@ -34,7 +34,7 @@ func connectToRegistryOfImage(imageAndTag *dockerImageName) *registry.Registry {
 }
 
 func checkDockerImage(dockerHubConnection *registry.Registry, imageAndTag dockerImageName) bool {
-
+	log.Printf("Looking for image %s:%s \n", imageAndTag.BaseImage, imageAndTag.Tag)
 	defer func() {
 		if r := recover(); r != nil {
 			fmt.Printf("Could not connect to Container registry, network error: %v \n", r)
