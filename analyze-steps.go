@@ -55,7 +55,10 @@ func readJSON(fileName string) []stepDetails {
 	}
 
 	var v interface{}
-	json.Unmarshal(jsonData, &v)
+	err = json.Unmarshal(jsonData, &v)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	data := v.([]interface{})
 	p := new(parsingContext)
@@ -150,7 +153,7 @@ func storeImageInfo(fullDockerImage string, p *parsingContext) {
 
 	//For tags with variables like $MY_TAG we will just check latest. For image names with variables
 	// we cannot really do anything
-	if strings.Contains(dockerImage.BaseImage, "$") || strings.Contains(dockerImage.BaseImage, "/") == false {
+	if strings.Contains(dockerImage.BaseImage, "$") || !strings.Contains(dockerImage.BaseImage, "/") {
 		return
 	}
 	if strings.Contains(dockerImage.Tag, "$") {

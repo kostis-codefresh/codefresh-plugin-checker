@@ -49,7 +49,7 @@ func checkDockerImage(dockerHubConnection *registry.Registry, imageAndTag docker
 	sort.Strings(tags)
 
 	log.Println("Found Dockerhub tags: ", tags)
-	if imageAndTag.HasTag == false {
+	if !imageAndTag.HasTag {
 		return true
 	}
 

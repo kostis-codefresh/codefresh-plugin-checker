@@ -72,7 +72,7 @@ func postProcessSteps(stepsFound []stepDetails) {
 		for y := range stepsFound[i].ImagesUsed {
 			dockeHubConnection := connectToRegistryOfImage(&stepsFound[i].ImagesUsed[y])
 			stepsFound[i].ImagesUsed[y].FoundInRegistry = checkDockerImage(dockeHubConnection, stepsFound[i].ImagesUsed[y])
-			if stepsFound[i].ImagesUsed[y].FoundInRegistry == false {
+			if !stepsFound[i].ImagesUsed[y].FoundInRegistry {
 				stepsFound[i].Status = notOk
 				stepsFound[i].ImageSummary += stepsFound[i].ImagesUsed[y].BaseImage + ":" + stepsFound[i].ImagesUsed[y].Tag + " "
 			}
