@@ -71,6 +71,32 @@ func TestCheckGCRImageWithoutTag(t *testing.T) {
 	assert.True(t, foundInRegistry, "Should be found in docker registry")
 }
 
+func TestCheckQuayImageWithoutTag(t *testing.T) {
+	imageAndTag := dockerImageName{
+		BaseImage: "quay.io/codefreshplugins/twilio",
+		HasTag:    false,
+		Tag:       "",
+	}
+
+	registryConnection := connectToRegistryOfImage(&imageAndTag)
+	foundInRegistry := checkDockerImage(registryConnection, imageAndTag)
+
+	assert.True(t, foundInRegistry, "Should be found in docker registry")
+}
+
+func TestCheckQuayImageWithTag(t *testing.T) {
+	imageAndTag := dockerImageName{
+		BaseImage: "quay.io/codefreshplugins/cfstep-codecommit",
+		HasTag:    true,
+		Tag:       "0.1.0",
+	}
+
+	registryConnection := connectToRegistryOfImage(&imageAndTag)
+	foundInRegistry := checkDockerImage(registryConnection, imageAndTag)
+
+	assert.True(t, foundInRegistry, "Should be found in docker registry")
+}
+
 func TestUnknownRegistry(t *testing.T) {
 	imageAndTag := dockerImageName{
 		BaseImage: "r.cfcr.io/jbadeau/gauge-typescript-plugin",

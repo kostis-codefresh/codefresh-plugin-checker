@@ -66,7 +66,6 @@ func createRegistryClient(ctx context.Context, domain string) (*registry.Registr
 	var (
 		insecure    bool
 		forceNonSSL bool
-		skipPing    bool
 
 		timeout time.Duration
 
@@ -99,7 +98,7 @@ func createRegistryClient(ctx context.Context, domain string) (*registry.Registr
 		Domain:   domain,
 		Insecure: insecure,
 		Debug:    debug,
-		SkipPing: skipPing,
+		SkipPing: true, //Quay does not support ping https://github.com/genuinetools/reg/issues/198
 		NonSSL:   forceNonSSL,
 		Timeout:  timeout,
 	})
