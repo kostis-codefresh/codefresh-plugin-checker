@@ -13,7 +13,17 @@ steps:
     arguments:
       repo: 'kostis-codefresh/codefresh-plugin-checker'
       git: github-1
-      revision: 'master'
+      revision: 'master'  
+  lint:
+    title: "Linting"
+    type: "freestyle" 
+    image: "golangci/golangci-lint" 
+    working_directory: "${{my_clone}}" 
+    commands:
+      - "golangci-lint run -v"
+    environment:
+      - GOPATH=/codefresh/volume/go
+    stage: "prepare"      
   run_unit_tests:
     title: Running unit tests
     stage: test
@@ -40,7 +50,7 @@ steps:
     commands:
       - go run . step-info.json
     environment:
-    - GOPATH=/codefresh/volume/go
+    - GOPATH=/codefresh/volume/go    
   upload_report:
     title: Uploading report
     stage: report
@@ -58,3 +68,4 @@ steps:
       - git commit -m "Automatic CI report"
       - git push "https://kostis-codefresh:$GITHUB_TOKEN@github.com/kostis-codefresh/codefresh-plugin-checker" gh-pages 
       - echo "Report is ready at https://kostis-codefresh.github.io/codefresh-plugin-checker/"
+    
